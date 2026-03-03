@@ -48,8 +48,8 @@ const SetAvatar = () => {
   const navigate = useNavigate();
 
   const [selectedAvatar, setSelectedAvatar] = useState(undefined);
-  const [selectedSprite, setSelectedSprite] = useState(sprites[0]); // ✅ FIXED
   const [loading, setLoading] = useState(false);
+  const [currentSprite, setCurrentSprite] = useState(sprites[0]);
 
   useEffect(() => {
     if (!localStorage.getItem("user")) {
@@ -64,22 +64,18 @@ const SetAvatar = () => {
     });
   };
 
-  const [imgURL, setImgURL] = useState(
+  const generateImages = (sprite) =>
     Array.from({ length: 4 }, () =>
-      `https://api.dicebear.com/7.x/${selectedSprite}/svg?seed=${randomName()}`
-    )
-  );
-
-  const handleSpriteChange = (e) => {
-    const sprite = e.target.value;
-    setSelectedSprite(sprite);
-    setLoading(true);
-
-    const newImages = Array.from({ length: 4 }, () =>
       `https://api.dicebear.com/7.x/${sprite}/svg?seed=${randomName()}`
     );
 
-    setImgURL(newImages);
+  const [imgURL, setImgURL] = useState(generateImages(currentSprite));
+
+  const handleSpriteChange = (e) => {
+    const sprite = e.target.value;
+    setCurrentSprite(sprite);
+    setLoading(true);
+    setImgURL(generateImages(sprite));
     setLoading(false);
   };
 
@@ -117,11 +113,9 @@ const SetAvatar = () => {
   return (
     <div style={{ position: "relative", overflow: "hidden" }}>
       <Particles
-        id="tsparticles"
         init={particlesInit}
         options={{
           background: { color: { value: "#000" } },
-          fpsLimit: 60,
           particles: {
             number: { value: 150 },
             color: { value: "#ffcc00" },
@@ -171,7 +165,7 @@ const SetAvatar = () => {
             </div>
 
             <select
-              value={selectedSprite}
+              value={currentSprite}
               onChange={handleSpriteChange}
               className="form-select mt-5"
             >
@@ -184,7 +178,6 @@ const SetAvatar = () => {
 
             <Button
               onClick={setProfilePicture}
-              type="submit"
               className="mt-5"
             >
               Set as Profile Picture
