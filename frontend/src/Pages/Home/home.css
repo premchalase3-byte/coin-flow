@@ -1,115 +1,146 @@
-.filterRow{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-
+/* ===== Animated Gradient Background ===== */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: linear-gradient(-45deg, #1e1e1e, #121212, #0d0d0d, #1e1e1e);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  font-family: 'Arial', sans-serif;
+  overflow-x: hidden;
 }
 
-.data-table {
-    border-collapse: collapse;
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
   }
-  
-.data-table thead th {
-    background-color: #f5f5f5;
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-.icons-handle{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 15px;
-    /* width: 100%; */
+/* ===== Filter Row ===== */
+.filterRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
 }
 
-.date{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-  
-/* .data-table tbody tr:hover {
-    background-color: #f5f5f5;
-    cursor: pointer;
-}
-  
-.data-table tbody tr:nth-child(even) {
-    background-color: #f8f8f8;
-} */
-
-.containerBtn{
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    margin-bottom: 20px;
-    width: 100%;
-    margin-left: 20px;
-}
-.mobileBtn{
-    display: none !important;
+.icons-handle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
 }
 
-.iconBtnBox{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
-    border: 2px solid white;
-    border-radius: 8px;
-    
-
+.date {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.iconActive{
-    background-color: white;
-    color: black;
-}
-.iconDeactive{
-    background-color: rgb(78, 74, 78);
-    color: black;
+.containerBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+  margin-left: 20px;
 }
 
+.mobileBtn {
+  display: none !important;
+}
+
+.iconBtnBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid white;
+  border-radius: 8px;
+}
+
+.iconActive {
+  background-color: white;
+  color: black;
+}
+
+.iconDeactive {
+  background-color: rgb(78, 74, 78);
+  color: black;
+}
+
+/* ===== TABLE TEXT COLOR FIX ===== */
+.table thead th {
+  color: white !important;
+}
+
+.table tbody td {
+  color: white !important;
+}
+
+/* Action icons (edit/delete) */
+.table tbody td svg {
+  color: white !important;
+}
+
+/* Optional: table border for dark theme */
+.table {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Optional: row hover effect */
+.table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ===== Responsive ===== */
 @media only screen and (max-width: 600px) {
-    .filterRow {
-        padding: 0px !important;
-        margin-top: 0px !important;
-        display: flex;
-        gap: "5px";
-        
-    }
-    .addNew{
-        /* padding-top: 20px; */
-        display: none !important;
-    }
-    .mobileBtn{
-        display: inline-block !important;
-    }
-    .iconBtnBox{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 0px;
-        
-    }
-    
-    .date{
-        /* padding: 10px; */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: "10px";
-        flex-direction: column;
-        margin-bottom: 10px;
-    }
-    .date .form-group{
-        width: 45%;
-    }
+  .filterRow {
+    padding: 0px !important;
+    margin-top: 0px !important;
+    display: flex;
+    gap: 5px;
+  }
 
-    .containerBtn{
-        margin-left: 0px !important;
-    }
+  .addNew {
+    display: none !important;
+  }
+
+  .mobileBtn {
+    display: inline-block !important;
+  }
+
+  .iconBtnBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0px;
+  }
+
+  .date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  .date .form-group {
+    width: 45%;
+  }
+
+  .containerBtn {
+    margin-left: 0px !important;
+  }
 }

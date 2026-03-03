@@ -1,10 +1,25 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-export const connectDB = async (req, res) => {
-    const db = process.env.MONGO_URL;
+dotenv.config(); // make sure environment variables load
 
-    const {connection} = await mongoose.connect(db, { useNewUrlParser: true });
+export const connectDB = async () => {
+  try {
+    // Debug log to confirm .env is loading
+    console.log("Loaded MONGO_URL:", process.env.MONGO_URL);
 
-    console.log(`MongoDB Connected to ${connection.host}`);
+    if (!process.env.MONGO_URL) {
+      throw new Error("MONGO_URL is missing in .env");
+    }
 
-}
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log("✅ MongoDB Connected Successfully");
+  } catch (error) {
+    console.error("❌ MongoDB Connection Failed:", error);
+    process.exit(1);
+  }
+};

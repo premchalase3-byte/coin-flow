@@ -94,15 +94,15 @@ const TableData = (props) => {
       <Container>
         <Table responsive="md" className="data-table">
           <thead>
-            <tr>
-              <th>Date</th>
-              <th>Title</th>
-              <th>Amount</th>
-              <th>Type</th>
-              <th>Category</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+  <tr>
+    <th className="table-header">Date</th>
+    <th className="table-header">Title</th>
+    <th className="table-header">Amount</th>
+    <th className="table-header">Type</th>
+    <th className="table-header">Category</th>
+    <th className="table-header">Action</th>
+  </tr>
+</thead>
           <tbody className="text-white">
             {props.data.map((item, index) => (
               <tr key={index}>
