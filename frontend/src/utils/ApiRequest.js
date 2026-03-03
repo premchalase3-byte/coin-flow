@@ -1,4 +1,5 @@
-const host = "https://coin-flow-backend.onrender.com";
+// Replace localhost with live backend URL
+const host = "https://coin-flow-backend.onrender.com"; // ✅ Render backend URL
 
 export const setAvatarAPI = `${host}/api/auth/setAvatar`;
 export const registerAPI = `${host}/api/auth/register`;

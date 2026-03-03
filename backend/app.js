@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config(); // must be the first thing
+dotenv.config(); // must be the first line
 
 import express from "express";
 import cors from "cors";
@@ -16,14 +16,19 @@ const app = express();
 // Allowed origins for frontend
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://main.d1sj7cd70hlter.amplifyapp.com",
-  "https://expense-tracker-app-three-beryl.vercel.app"
+  "https://coin-flow-eight.vercel.app", // ✅ your live frontend URL
 ];
 
-// CORS
+// CORS middleware
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -47,10 +52,9 @@ app.get("/", (req, res) => {
 
 // Start server
 const port = process.env.PORT || 5000;
-
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
-// Connect to DB after server starts
+// Connect to MongoDB after server starts
 connectDB();
