@@ -57,7 +57,6 @@ const SetAvatar = () => {
 
   const [selectedAvatar, setSelectedAvatar] = useState(undefined);
   const [loading, setLoading] = useState(false);
-  const [selectedSprite, setSelectedSprite] = React.useState(sprites[0]);
 
   useEffect(() => {
     if (!localStorage.getItem("user")) {
