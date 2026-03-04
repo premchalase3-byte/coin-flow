@@ -2,7 +2,6 @@ const host = "https://coin-flow-backend.onrender.com";
 
 export const registerAPI = `${host}/api/auth/register`;
 export const loginAPI = `${host}/api/auth/login`;
-
 export const addTransaction = `${host}/api/v1/addTransaction`;
 export const getTransactions = `${host}/api/v1/getTransaction`;
 export const editTransactions = `${host}/api/v1/updateTransaction`;

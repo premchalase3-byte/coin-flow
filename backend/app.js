@@ -12,9 +12,10 @@ import userRoutes from "./Routers/userRouter.js";
 
 const app = express();
 
+/* Allowed Frontend URLs */
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://expense-tracker-app-three-beryl.vercel.app"
+  "https://coin-flow-ruddy.vercel.app"
 ];
 
 app.use(
@@ -25,23 +26,28 @@ app.use(
   })
 );
 
+/* Middlewares */
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(helmet());
 app.use(morgan("dev"));
 
+/* Routes */
 app.use("/api/v1", transactionRoutes);
 app.use("/api/auth", userRoutes);
 
+/* Health Check Route */
 app.get("/", (req, res) => {
   res.send("Backend is running...");
 });
 
+/* Start Server */
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
+/* Connect MongoDB */
 connectDB();
