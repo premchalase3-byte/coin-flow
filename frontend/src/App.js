@@ -1,26 +1,40 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from './Pages/Auth/Login';
-import Register from './Pages/Auth/Register';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from './Pages/Home/Home';
-import SetAvatar from './Pages/Avatar/setAvatar';
-import About from './Pages/About/About'; // ✅ Import About Page
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./Pages/Login";
+import Signup from "./Pages/Register";
+import Home from "./Pages/Home";
 
-const App = () => {
+function App() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/setAvatar" element={<SetAvatar />} />
-          <Route path="/about" element={<About />} /> {/* ✅ About Route */}
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Router>
+      <Routes>
+
+        {/* Home */}
+        <Route
+          path="/"
+          element={user ? <Home /> : <Navigate to="/login" />}
+        />
+
+        {/* Login */}
+        <Route
+          path="/login"
+          element={!user ? <Login /> : <Navigate to="/" />}
+        />
+
+        {/* Signup */}
+        <Route
+          path="/signup"
+          element={!user ? <Signup /> : <Navigate to="/" />}
+        />
+
+        {/* Catch All */}
+        <Route path="*" element={<Navigate to="/" />} />
+
+      </Routes>
+    </Router>
   );
-};
+}
 
 export default App;
