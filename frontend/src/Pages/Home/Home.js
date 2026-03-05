@@ -268,8 +268,10 @@ const Home = () => {
           </div>
         )}
 
-        {!loading && view === "chart" && !isMobile && (
-          <Analytics transactions={transactions} user={cUser} />
+        {!loading && view === "chart" && (
+          <div className="chart-container">
+            <Analytics transactions={transactions} user={cUser} />
+         </div>
         )}
 
         <ToastContainer />
