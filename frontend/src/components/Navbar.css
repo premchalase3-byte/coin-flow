@@ -1,56 +1,71 @@
-.navbar {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 30px;
-  background-color: #111;
-  color: white;
-  height: 60px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
+.navbar{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 30px;
+  background-color:#111;
+  color:white;
+  height:60px;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:1000;
 }
 
-/* App title */
-.logo {
-  font-weight: 600;
-  letter-spacing: 1px;
+.logo{
+  font-weight:600;
+  letter-spacing:1px;
 }
 
-/* Links container */
-.nav-links {
-  display: flex;
-  gap: 20px;
-  align-items: center;
+.nav-links{
+  display:flex;
+  gap:20px;
+  align-items:center;
 }
 
-/* Normal links */
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
+.nav-links a{
+  color:white;
+  text-decoration:none;
+  font-weight:500;
+  transition:color 0.2s ease;
 }
 
-.nav-links a:hover {
-  color: #0d6efd;
+.nav-links a:hover{
+  color:#0d6efd;
 }
 
-/* Logout button */
-.logout-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0;
-  transition: color 0.2s ease;
+.logout-btn{
+  background:none;
+  border:none;
+  color:white;
+  font-weight:500;
+  cursor:pointer;
+  font-size:16px;
+  padding:0;
+  transition:color 0.2s ease;
 }
 
-.logout-btn:hover {
-  color: #ff4d4d;
+.logout-btn:hover{
+  color:#ff4d4d;
+}
+
+/* MOBILE FIX */
+
+@media(max-width:768px){
+
+  .navbar{
+    flex-direction:column;
+    height:auto;
+    padding:10px;
+    gap:8px;
+  }
+
+  .nav-links{
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+  }
+
 }

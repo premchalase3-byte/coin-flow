@@ -35,6 +35,8 @@ const Home = () => {
   const [view, setView] = useState("table");
   const [show, setShow] = useState(false);
 
+  const isMobile = window.innerWidth < 768;
+
   const [values, setValues] = useState({
     title: "",
     amount: "",
@@ -261,18 +263,18 @@ const Home = () => {
         {loading && <Spinner />}
 
         {!loading && view === "table" && (
-          <TableData data={transactions} user={cUser} />
+          <div className="table-container">
+            <TableData data={transactions} user={cUser} />
+          </div>
         )}
 
-        {!loading && view === "chart" && (
+        {!loading && view === "chart" && !isMobile && (
           <Analytics transactions={transactions} user={cUser} />
         )}
 
         <ToastContainer />
 
       </Container>
-
-      {/* Add Transaction Modal */}
 
       <Modal show={show} onHide={handleClose} centered>
 

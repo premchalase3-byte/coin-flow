@@ -1,5 +1,13 @@
 *{
-    padding: 0px;
-    margin: 0px;
-    /* background-color: black !important;; */
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow-x:hidden;
+    background-color:#121212;
+}
+*{
+  transition:all 0.15s ease;
 }
