@@ -12,16 +12,16 @@ import userRoutes from "./Routers/userRouter.js";
 
 const app = express();
 
-/* Allowed Frontend URLs */
+/* ✅ Allow both Vercel domains */
 const allowedOrigins = [
   "http://localhost:3000",
+  "https://coin-flow-blue.vercel.app",
   "https://coin-flow-ruddy.vercel.app"
 ];
 
 app.use(
   cors({
     origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -37,17 +37,15 @@ app.use(morgan("dev"));
 app.use("/api/v1", transactionRoutes);
 app.use("/api/auth", userRoutes);
 
-/* Health Check Route */
 app.get("/", (req, res) => {
   res.send("Backend is running...");
 });
 
-/* Start Server */
+/* Start server */
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
-/* Connect MongoDB */
 connectDB();
