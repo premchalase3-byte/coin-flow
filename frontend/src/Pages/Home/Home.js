@@ -35,8 +35,6 @@ const Home = () => {
   const [view, setView] = useState("table");
   const [show, setShow] = useState(false);
 
-  const isMobile = window.innerWidth < 768;
-
   const [values, setValues] = useState({
     title: "",
     amount: "",
