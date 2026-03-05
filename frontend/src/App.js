@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Login from "./Pages/Auth/Login";
 import Signup from "./Pages/Auth/Register";
 import Home from "./Pages/Home/Home";
+import About from "./Pages/About/About";   // ✅ ADD THIS
 
 function App() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -25,6 +26,12 @@ function App() {
         <Route
           path="/signup"
           element={!user ? <Signup /> : <Navigate to="/" />}
+        />
+
+        {/* ✅ ADD ABOUT ROUTE */}
+        <Route
+          path="/about"
+          element={user ? <About /> : <Navigate to="/login" />}
         />
 
         <Route path="*" element={<Navigate to="/" />} />
