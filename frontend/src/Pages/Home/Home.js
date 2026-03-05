@@ -6,7 +6,6 @@ import { addTransaction, getTransactions } from "../../utils/ApiRequest";
 import axios from "axios";
 import Spinner from "../../components/Spinner";
 import TableData from "./TableData";
-import Analytics from "./Analytics";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./home.css";
