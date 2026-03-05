@@ -15,8 +15,7 @@ const app = express();
 /* ✅ Allow both Vercel domains */
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://coin-flow-blue.vercel.app",
-  "https://coin-flow-ruddy.vercel.app"
+  "https://coin-flow-premchalase3-bytes-projects.vercel.app"
 ];
 
 app.use(
