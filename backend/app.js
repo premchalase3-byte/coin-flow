@@ -15,12 +15,25 @@ const app = express();
 /* Allowed Frontend URLs */
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://coinflow-premchalase3-bytes-projects.vercel.app/"
+  "https://coinflow-premchalase3-bytes-projects.vercel.app"
 ];
 
+/* CORS Configuration */
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // allow requests with no origin (mobile apps, postman)
+      if (!origin) return callback(null, true);
+
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
