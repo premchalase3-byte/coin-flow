@@ -53,40 +53,33 @@ button:hover{
 }
 /* DatePicker Dark Mode Fix */
 
+/* Clean DatePicker Dark Theme */
+
 .react-datepicker {
-  background-color: #1c1c1c !important;
-  border: 1px solid #444 !important;
+  background: #1a1a1a;
+  border: 1px solid #444;
 }
 
 .react-datepicker__header {
-  background-color: #000 !important;
-  border-bottom: 1px solid #444 !important;
-}
-
-.react-datepicker__day {
-  color: white !important;
-}
-
-.react-datepicker__day:hover {
-  background-color: #f0c419 !important;
-  color: black !important;
+  background: #111;
+  border-bottom: 1px solid #333;
 }
 
 .react-datepicker__current-month,
-.react-datepicker-time__header,
-.react-datepicker-year-header {
-  color: white !important;
-}
-
 .react-datepicker__day-name {
-  color: #f0c419 !important;
+  color: #f0c419;
 }
 
-.react-datepicker__navigation-icon::before {
-  border-color: white !important;
-}
-.react-datepicker-wrapper input {
-  background-color: #111;
+.react-datepicker__day {
   color: white;
-  border: 1px solid #555;
+}
+
+.react-datepicker__day:hover {
+  background: #f0c419;
+  color: black;
+}
+
+.react-datepicker__day--selected {
+  background: #28a745;
+  color: white;
 }
