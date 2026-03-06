@@ -5,23 +5,26 @@ import { loadFull } from "tsparticles";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/ReactToastify.css";import axios from "axios";
+import axios from "axios";
 import { loginAPI } from "../../utils/ApiRequest";
 
 const Login = () => {
+
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+  });
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
       navigate("/");
     }
   }, [navigate]);
-
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-  });
 
   const toastOptions = {
     position: "bottom-right",
@@ -44,6 +47,7 @@ const Login = () => {
     }
 
     try {
+
       setLoading(true);
 
       const { data } = await axios.post(loginAPI, {
@@ -52,6 +56,7 @@ const Login = () => {
       });
 
       if (data.success) {
+
         localStorage.setItem("user", JSON.stringify(data.user));
 
         toast.success(data.message, toastOptions);
@@ -61,13 +66,19 @@ const Login = () => {
         }, 1000);
 
       } else {
+
         toast.error(data.message, toastOptions);
+
       }
 
     } catch (error) {
+
       toast.error("Login failed. Please try again.", toastOptions);
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
@@ -76,7 +87,9 @@ const Login = () => {
   }, []);
 
   return (
+
     <div style={{ position: "relative", overflow: "hidden" }}>
+
       <Particles
         init={particlesInit}
         options={{
@@ -95,53 +108,114 @@ const Login = () => {
         }}
       />
 
-      <Container className="mt-5" style={{ position: "relative", zIndex: 2 }}>
-        <Row>
-          <Col md={{ span: 6, offset: 3 }}>
-            <h1 className="text-center mt-5">
-              <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "white" }} />
-            </h1>
-            <h2 className="text-white text-center">Login</h2>
+      <Container
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: "100vh", position: "relative", zIndex: 2 }}
+      >
 
-            <Form onSubmit={handleSubmit}>
-              <Form.Group className="mt-3">
-                <Form.Label className="text-white">Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  value={values.email}
-                  onChange={handleChange}
+        <Row className="w-100">
+
+          <Col xs={12} md={{ span: 6, offset: 3 }}>
+
+            <div
+              style={{
+                backdropFilter: "blur(10px)",
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "15px",
+                padding: "35px",
+              }}
+            >
+
+              <h1 className="text-center">
+                <AccountBalanceWalletIcon
+                  sx={{ fontSize: 40, color: "white" }}
                 />
-              </Form.Group>
+              </h1>
 
-              <Form.Group className="mt-3">
-                <Form.Label className="text-white">Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  name="password"
-                  value={values.password}
-                  onChange={handleChange}
-                />
-              </Form.Group>
+              <h2 className="text-center text-white mt-3">
+                Login
+              </h2>
 
-              <div className="text-center mt-4">
-                <Button type="submit" disabled={loading}>
-                  {loading ? "Signing in..." : "Login"}
-                </Button>
+              <Form onSubmit={handleSubmit}>
 
-                <p className="mt-3 text-muted">
-                  Don’t have an account?{" "}
-                  <Link to="/signup" className="text-white">
-                    Signup
-                  </Link>
-                </p>
-              </div>
-            </Form>
+                <Form.Group className="mt-4">
+
+                  <Form.Label className="text-white">
+                    Email
+                  </Form.Label>
+
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    value={values.email}
+                    onChange={handleChange}
+                  />
+
+                </Form.Group>
+
+                <Form.Group className="mt-3">
+
+                  <Form.Label className="text-white">
+                    Password
+                  </Form.Label>
+
+                  <div style={{ position: "relative" }}>
+
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={values.password}
+                      onChange={handleChange}
+                    />
+
+                    <span
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "8px",
+                        cursor: "pointer",
+                        color: "#999",
+                      }}
+                    >
+                      {showPassword ? "🙈" : "👁"}
+                    </span>
+
+                  </div>
+
+                </Form.Group>
+
+                <div className="text-center mt-4">
+
+                  <Button type="submit" disabled={loading}>
+                    {loading ? "Logging in..." : "Login"}
+                  </Button>
+
+                  <p className="mt-3" style={{ color: "#ccc" }}>
+                    Don’t have an account?{" "}
+                    <Link
+                      to="/signup"
+                      style={{ color: "#0d6efd", fontWeight: "500" }}
+                    >
+                      Signup
+                    </Link>
+                  </p>
+
+                </div>
+
+              </Form>
+
+            </div>
+
           </Col>
+
         </Row>
 
         <ToastContainer />
+
       </Container>
+
     </div>
   );
 };

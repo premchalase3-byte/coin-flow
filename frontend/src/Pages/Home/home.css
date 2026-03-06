@@ -340,3 +340,27 @@ button.btn-primary:hover {
 .transactions{
   border-left:4px solid #ffc107;
 }
+/* Fix form input visibility inside modal */
+
+.modal input,
+.modal select,
+.modal textarea {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ccc !important;
+}
+
+.modal input::placeholder,
+.modal textarea::placeholder {
+  color: #777 !important;
+}
+
+/* When typing */
+.modal input:focus,
+.modal select:focus,
+.modal textarea:focus {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #f0c419 !important;
+  box-shadow: 0 0 5px rgba(240,196,25,0.6);
+}
