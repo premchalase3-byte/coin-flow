@@ -260,10 +260,11 @@ const Home = () => {
 
               <DatePicker
                 selected={startDate}
-                onChange={handleStartChange}
-                selectsStart
-                startDate={startDate}
-                endDate={endDate}
+              onChange={handleStartChange}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
+              className="form-control"
               />
 
             </div>
@@ -272,12 +273,13 @@ const Home = () => {
               <label className="text-white">End Date:</label>
 
               <DatePicker
-                selected={endDate}
-                onChange={handleEndChange}
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
-                minDate={startDate}
+              selected={endDate}
+              onChange={handleEndChange}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
+              minDate={startDate}
+              className="form-control"
               />
 
             </div>
