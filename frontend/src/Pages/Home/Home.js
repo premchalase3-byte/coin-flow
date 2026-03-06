@@ -9,10 +9,13 @@ import TableData from "./TableData";
 import Analytics from "./Analytics";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/ReactToastify.css";
+
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "react-toastify/ReactToastify.css";
+
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import BarChartIcon from "@mui/icons-material/BarChart";
+
 import "./home.css";
 
 const Home = () => {
