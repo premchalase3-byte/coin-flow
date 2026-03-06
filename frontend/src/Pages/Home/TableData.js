@@ -13,8 +13,6 @@ const TableData = (props) => {
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [currId, setCurrId] = useState(null);
   const [refresh, setRefresh] = useState(false);
-  const [user, setUser] = useState(null);
-
   const handleEditClick = (itemKey) => {
     if (transactions.length > 0) {
       const editTran = props.data.filter((item) => item._id === itemKey);
@@ -70,7 +68,6 @@ const TableData = (props) => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    setUser(props.user);
     setTransactions(props.data);
   }, [props.data, props.user, refresh]);
 
