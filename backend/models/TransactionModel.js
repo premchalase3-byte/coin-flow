@@ -1,54 +1,50 @@
 import mongoose from "mongoose";
 
-
 const transactionSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: [true, "Title is required"],
-        trim: true,
-        
-    },
+  title: {
+    type: String,
+    required: [true, "Title is required"],
+    trim: true,
+  },
 
-    amount: {
-        type: Number,
-        required: [true, "Amount is required"],
-        default: 0,
-    },
+  amount: {
+    type: Number,
+    required: [true, "Amount is required"],
+    default: 0,
+  },
 
-    category: {
-        type: String,
-        required: [true, "Category is required"],
-        
-    },
+  category: {
+    type: String,
+    required: [true, "Category is required"],
+  },
 
-    description: {
-        type: String,
-        required: [true, "Description is required"],
-        
-    },
-    transactionType: {
-        type: String,
-        required: [true, "Transaction Type is required"],
-        
-    },
+  description: {
+    type: String,
+    required: [true, "Description is required"],
+  },
 
-    date: {
-        type: Date,
-        required: [true, "Date is required"],
-    },
+  transactionType: {
+    type: String,
+    required: [true, "Transaction Type is required"],
+    enum: ["income", "expense"],   // ✅ only allow these values
+  },
 
-    user:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
+  date: {
+    type: Date,
+    required: [true, "Date is required"],
+  },
 
-    createdAt: {
-        type: Date,
-        default: new Date(),
-    }
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-const Transaction = mongoose.model('Transaction', transactionSchema);
+const Transaction = mongoose.model("Transaction", transactionSchema);
 
 export default Transaction;

@@ -1,4 +1,3 @@
-// LoginPage.js
 import { useCallback, useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Particles from "react-tsparticles";
@@ -55,11 +54,17 @@ const Login = () => {
 
       if (data.success) {
         localStorage.setItem("user", JSON.stringify(data.user));
+
         toast.success(data.message, toastOptions);
-        navigate("/");
+
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
+
       } else {
         toast.error(data.message, toastOptions);
       }
+
     } catch (error) {
       toast.error("Login failed. Please try again.", toastOptions);
     } finally {
@@ -135,6 +140,7 @@ const Login = () => {
             </Form>
           </Col>
         </Row>
+
         <ToastContainer />
       </Container>
     </div>

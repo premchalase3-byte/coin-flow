@@ -8,7 +8,7 @@ import Spinner from "../../components/Spinner";
 import TableData from "./TableData";
 import Analytics from "./Analytics";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/react-toastify.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -44,13 +44,26 @@ const Home = () => {
     transactionType: "",
   });
 
+  /* Dashboard Statistics */
+
+  const totalIncome = transactions
+    .filter((t) => t.transactionType === "income")
+    .reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+  const totalExpense = transactions
+    .filter((t) => t.transactionType === "expense")
+    .reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+  const totalBalance = totalIncome - totalExpense;
+
+  const totalTransactions = transactions.length;
+
   const handleStartChange = (date) => setStartDate(date);
   const handleEndChange = (date) => setEndDate(date);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  /* Check user login */
   useEffect(() => {
     const userData = localStorage.getItem("user");
 
@@ -118,7 +131,6 @@ const Home = () => {
     setEndDate(null);
   };
 
-  /* Fetch transactions */
   useEffect(() => {
     if (!cUser) return;
 
@@ -156,6 +168,30 @@ const Home = () => {
 
       <Container fluid style={{ marginTop: "90px", minHeight: "100vh", padding: "20px" }}>
 
+        <div className="stats-container">
+
+          <div className="stat-card income">
+            <h5>Total Income</h5>
+            <h3>₹ {totalIncome}</h3>
+          </div>
+
+          <div className="stat-card expense">
+            <h5>Total Expense</h5>
+            <h3>₹ {totalExpense}</h3>
+          </div>
+
+          <div className="stat-card balance">
+            <h5>Balance</h5>
+            <h3>₹ {totalBalance}</h3>
+          </div>
+
+          <div className="stat-card transactions">
+            <h5>Total Transactions</h5>
+            <h3>{totalTransactions}</h3>
+          </div>
+
+        </div>
+
         <div className="filterRow">
 
           <div className="text-white">
@@ -171,7 +207,6 @@ const Home = () => {
                 <option value="365">Last Year</option>
                 <option value="custom">Custom</option>
               </Form.Select>
-
             </Form.Group>
           </div>
 
@@ -185,9 +220,8 @@ const Home = () => {
               >
                 <option value="all">All</option>
                 <option value="expense">Expense</option>
-                <option value="credit">Earned</option>
+                <option value="income">Income</option>
               </Form.Select>
-
             </Form.Group>
           </div>
 
@@ -267,9 +301,9 @@ const Home = () => {
         )}
 
         {!loading && view === "chart" && (
-          <div className="chart-container">
+          <div className="analytics-card">
             <Analytics transactions={transactions} user={cUser} />
-         </div>
+          </div>
         )}
 
         <ToastContainer />
@@ -357,7 +391,7 @@ const Home = () => {
               >
 
                 <option value="">Choose...</option>
-                <option value="credit">Credit</option>
+                <option value="income">Income</option>
                 <option value="expense">Expense</option>
 
               </Form.Select>

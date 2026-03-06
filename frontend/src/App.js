@@ -7,7 +7,7 @@ import Home from "./Pages/Home/Home";
 import About from "./Pages/About/About";   // ✅ ADD THIS
 
 function App() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = localStorage.getItem("user");
 
   return (
     <Router>
