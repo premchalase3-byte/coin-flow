@@ -42,4 +42,35 @@
     line-height: 100px;
     font-size: 20px;
   }
-  
+  .circular-progressbar {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circular-progressbar svg {
+  transform: rotate(-90deg);
+}
+
+.circle-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.1);
+  stroke-width: 10;
+}
+
+.circle-progress {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.2s ease;
+}
+
+.percentage {
+  position: absolute;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+}

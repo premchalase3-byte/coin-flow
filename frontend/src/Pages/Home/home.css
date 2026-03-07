@@ -364,3 +364,76 @@ button.btn-primary:hover {
   border-color: #f0c419 !important;
   box-shadow: 0 0 5px rgba(240,196,25,0.6);
 }
+/* ============================= */
+/* MODERN ANALYTICS DASHBOARD */
+/* ============================= */
+
+.analytics-card .card{
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px);
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  transition:all 0.3s ease;
+}
+
+.analytics-card .card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 18px 40px rgba(0,0,0,0.6);
+}
+
+/* Card Header */
+
+.analytics-card .card-header{
+  background:transparent !important;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:0.4px;
+  color:#e5e5e5;
+}
+
+/* Income / Expense text */
+
+.analytics-card h5{
+  font-size:16px;
+  font-weight:600;
+}
+
+/* Category progress bars */
+
+.category-progress-wrapper{
+  margin-bottom:14px;
+}
+
+.category-progress-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  margin-bottom:4px;
+}
+
+.category-bar{
+  height:8px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.1);
+  overflow:hidden;
+}
+
+.category-progress{
+  height:100%;
+  border-radius:10px;
+  transition:width 0.6s ease;
+}
+
+/* Income gradient */
+
+.income-bar{
+  background:linear-gradient(90deg,#00ff9d,#2ecc71);
+}
+
+/* Expense gradient */
+
+.expense-bar{
+  background:linear-gradient(90deg,#ff4d4d,#ff7a7a);
+}

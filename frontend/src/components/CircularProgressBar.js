@@ -1,45 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import './CircularProgressBar.css';
+import React, { useEffect, useState } from "react";
+import "./CircularProgressBar.css";
 
 const CircularProgressBar = ({ percentage, color }) => {
   const radius = 45;
   const circumference = 2 * Math.PI * radius;
-  const progress = ((100 - percentage) / 100) * circumference;
 
-  const [isAnimating, setIsAnimating] = useState(false);
+  const progress = circumference - (percentage / 100) * circumference;
+
+  const [offset, setOffset] = useState(circumference);
 
   useEffect(() => {
-    setIsAnimating(true);
-  }, []);
-
-  const circleStyle = {
-    '--circumference': circumference,
-    '--progress': progress,
-    '--color': color,
-  };
+    setTimeout(() => {
+      setOffset(progress);
+    }, 200);
+  }, [progress]);
 
   return (
     <div className="circular-progressbar">
-      <svg viewBox="0 0 100 100">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+
+        {/* Background circle */}
+
         <circle
-          className="circle bg"
+          className="circle-bg"
+          cx="60"
+          cy="60"
           r={radius}
-          cx="50"
-          cy="50"
-          strokeDasharray={circumference}
-          style={circleStyle}
         />
+
+        {/* Progress circle */}
+
         <circle
-          className={`circle ${isAnimating ? 'animating' : ''}`}
+          className="circle-progress"
+          cx="60"
+          cy="60"
           r={radius}
-          cx="50"
-          cy="50"
+          stroke={color}
           strokeDasharray={circumference}
-          strokeDashoffset={progress}
-          style={circleStyle}
+          strokeDashoffset={offset}
         />
+
       </svg>
-      <div className="percentage">{percentage}%</div>
+
+      <div className="percentage">
+        {percentage}%
+      </div>
     </div>
   );
 };
