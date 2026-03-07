@@ -94,7 +94,7 @@ const Analytics = ({ transactions }) => {
                 <ArrowDropDownIcon/> Expense {totalExpenseTransactions.length}
               </p>
 
-              <div className="d-flex justify-content-around mt-3">
+              <div className="circle-wrapper">
 
                 <CircularProgressBar
                   percentage={totalIncomePercent.toFixed(0)}
@@ -141,7 +141,7 @@ const Analytics = ({ transactions }) => {
                 <CurrencyRupeeIcon fontSize="small"/>
               </p>
 
-              <div className="d-flex justify-content-around mt-3">
+              <div className="circle-wrapper">
 
                 <CircularProgressBar
                   percentage={TurnOverIncomePercent.toFixed(0)}

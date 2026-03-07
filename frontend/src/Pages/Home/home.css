@@ -437,3 +437,33 @@ button.btn-primary:hover {
 .expense-bar{
   background:linear-gradient(90deg,#ff4d4d,#ff7a7a);
 }
+/* ===== Fix Circular Chart Alignment ===== */
+
+.circle-wrapper{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:30px;
+  margin-top:20px;
+}
+/* ===== Category Progress Text Fix ===== */
+
+.category-progress-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+  color:white;
+  font-weight:500;
+  margin-bottom:5px;
+}
+.category-bar{
+  height:8px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.15);
+  overflow:hidden;
+}
+.analytics-card .card-body{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
