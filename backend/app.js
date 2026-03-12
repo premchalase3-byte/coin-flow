@@ -9,7 +9,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import transactionRoutes from "./Routers/Transactions.js";
 import userRoutes from "./Routers/userRouter.js";
-
+import aiRoutes from "./routes/aiRoutes.js";
+app.use("/api/ai", aiRoutes);
 const app = express();
 
 /* Allowed Frontend URLs */
