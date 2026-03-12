@@ -6,13 +6,17 @@ const AIChatbot = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
+  const [typing, setTyping] = useState(false);
 
   const sendMessage = async () => {
 
     if (!message.trim()) return;
 
-    const userMessage = { sender: "user", text: message };
-    setChat([...chat, userMessage]);
+    const userMsg = { sender: "user", text: message };
+
+    setChat(prev => [...prev, userMsg]);
+    setMessage("");
+    setTyping(true);
 
     try {
 
@@ -29,35 +33,73 @@ const AIChatbot = () => {
 
       const data = await res.json();
 
-      const aiMessage = {
-        sender: "ai",
-        text: data.reply
-      };
+      typeMessage(data.reply);
 
-      setChat(prev => [...prev, aiMessage]);
+    } catch (err) {
 
-    } catch (error) {
-
-      setChat(prev => [
-        ...prev,
-        { sender: "ai", text: "AI service unavailable." }
-      ]);
+      typeMessage("AI service unavailable.");
 
     }
 
-    setMessage("");
+  };
+
+
+  /* ========================= */
+  /* Typing Animation */
+  /* ========================= */
+
+  const typeMessage = (text) => {
+
+    let index = 0;
+    let typed = "";
+
+    const interval = setInterval(() => {
+
+      typed += text[index];
+      index++;
+
+      setChat(prev => {
+
+        const last = prev[prev.length - 1];
+
+        if (last && last.sender === "ai") {
+
+          const updated = [...prev];
+          updated[updated.length - 1].text = typed;
+          return updated;
+
+        } else {
+
+          return [...prev, { sender: "ai", text: typed }];
+
+        }
+
+      });
+
+      if (index === text.length) {
+        clearInterval(interval);
+        setTyping(false);
+      }
+
+    }, 20); // typing speed
 
   };
 
+
   return (
     <>
+
       {/* Floating Button */}
-      <div className="ai-button" onClick={() => setOpen(!open)}>
+
+      <div
+        className="ai-button"
+        onClick={() => setOpen(!open)}
+      >
         🤖
       </div>
 
-      {/* Chat Window */}
       {open && (
+
         <div className="ai-chat-window glass">
 
           <div className="ai-header">
@@ -67,6 +109,7 @@ const AIChatbot = () => {
           <div className="ai-messages">
 
             {chat.map((msg, index) => (
+
               <div
                 key={index}
                 className={
@@ -77,7 +120,14 @@ const AIChatbot = () => {
               >
                 {msg.text}
               </div>
+
             ))}
+
+            {typing && (
+              <div className="ai-msg typing">
+                AI is typing...
+              </div>
+            )}
 
           </div>
 
@@ -87,9 +137,10 @@ const AIChatbot = () => {
               type="text"
               placeholder="Ask about your finances..."
               value={message}
-              onChange={(e) =>
-                setMessage(e.target.value)
-              }
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") sendMessage();
+              }}
             />
 
             <button onClick={sendMessage}>
@@ -99,7 +150,9 @@ const AIChatbot = () => {
           </div>
 
         </div>
+
       )}
+
     </>
   );
 };

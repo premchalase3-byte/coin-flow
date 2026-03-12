@@ -1,3 +1,5 @@
+/* Floating AI Button */
+
 .ai-button{
 position:fixed;
 bottom:25px;
@@ -16,67 +18,119 @@ box-shadow:0 8px 20px rgba(0,0,0,0.4);
 z-index:999;
 }
 
+/* Chat Window */
+
 .ai-chat-window{
 position:fixed;
 bottom:100px;
 right:25px;
-width:320px;
-height:420px;
+width:340px;
+height:430px;
 display:flex;
 flex-direction:column;
-padding:10px;
+padding:14px;
+border-radius:14px;
+
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(14px);
+border:1px solid rgba(255,255,255,0.15);
+box-shadow:0 10px 40px rgba(0,0,0,0.6);
+
 z-index:999;
 }
 
+/* Header */
+
 .ai-header{
-font-weight:600;
+font-weight:700;
+font-size:16px;
 margin-bottom:10px;
 text-align:center;
+color:white;   /* FIXED */
+letter-spacing:0.5px;
 }
+
+/* Messages container */
 
 .ai-messages{
 flex:1;
 overflow-y:auto;
 display:flex;
 flex-direction:column;
-gap:8px;
-padding:5px;
+gap:10px;
+padding:6px;
 }
+
+/* User message */
 
 .user-msg{
 align-self:flex-end;
 background:#2ecc71;
 color:white;
-padding:8px 12px;
+padding:10px 14px;
 border-radius:10px;
 max-width:80%;
+font-size:14px;
 }
+
+/* AI message */
 
 .ai-msg{
 align-self:flex-start;
-background:rgba(255,255,255,0.1);
-padding:8px 12px;
+background:rgba(255,255,255,0.15);
+color:white;           /* FIXED */
+padding:10px 14px;
 border-radius:10px;
 max-width:80%;
+font-size:14px;
 }
+
+/* Input area */
 
 .ai-input{
 display:flex;
-gap:5px;
+gap:6px;
+margin-top:8px;
 }
+
+/* Input */
 
 .ai-input input{
 flex:1;
-padding:6px;
+padding:8px;
 border-radius:6px;
 border:none;
+background:rgba(255,255,255,0.15);
+color:white;
 }
+
+.ai-input input::placeholder{
+color:rgba(255,255,255,0.6);
+}
+
+/* Send button */
 
 .ai-input button{
 background:#2ecc71;
 border:none;
 color:white;
-padding:6px 10px;
+padding:8px 12px;
 border-radius:6px;
 cursor:pointer;
+transition:0.2s;
+}
+
+.ai-input button:hover{
+background:#27ae60;
+}
+.typing{
+opacity:0.7;
+font-style:italic;
+animation:blink 1.2s infinite;
+}
+
+@keyframes blink{
+0%{opacity:0.3;}
+50%{opacity:1;}
+100%{opacity:0.3;}
 }

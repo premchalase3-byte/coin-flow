@@ -13,7 +13,7 @@ import AIChatbot from "../../components/AIChatbot";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import AIInsights from "../../components/AIInsights";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import BarChartIcon from "@mui/icons-material/BarChart";
 
@@ -221,7 +221,7 @@ const Home = () => {
       <Container fluid style={{ marginTop: "90px", minHeight: "100vh", padding: "20px" }}>
 
         <div className="stats-container">
-
+        
           <div className="stat-card income">
             <h5>Total Income</h5>
             <h3>₹ {totalIncome}</h3>
@@ -243,7 +243,7 @@ const Home = () => {
           </div>
 
         </div>
-
+        <AIInsights transactions={transactions} />
         <div className="filterRow">
 
           <div className="text-white">
