@@ -1,6 +1,6 @@
-/* ============================= /
-/ GLOBAL GLASS THEME /
-/ ============================= */
+/* =============================
+GLOBAL GLASS THEME
+============================= */
 
 :root{
 --glass-bg: rgba(255,255,255,0.06);
@@ -8,94 +8,80 @@
 --glass-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
 
-/* ================================= */
-/* FINTECH ANIMATED GRADIENT BACKGROUND */
-/* ================================= */
+/* =================================
+FINTECH ANIMATED GRADIENT BACKGROUND
+================================= */
 
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Inter', sans-serif;
-  overflow-x: hidden;
-  background: linear-gradient(
-    120deg,
-    #0f172a,
-    #111827,
-    #1e293b,
-    #020617
-  );
-  background-size: 300% 300%;
-  animation: gradientShift 15s ease infinite;
+body, html{
+margin:0;
+padding:0;
+height:100%;
+font-family:'Inter', sans-serif;
+overflow-x:hidden;
+
+background: linear-gradient(
+-45deg,
+#0f172a,
+#1e293b,
+#020617,
+#1e1b4b
+);
+
+background-size:400% 400%;
+animation:gradientShift 10s ease infinite;
 }
 
-/* Main gradient animation */
+/* Gradient animation */
 
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+@keyframes gradientShift{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
-/* Soft glowing blobs */
+/* Glow blobs */
 
-body::before {
-  content: "";
-  position: fixed;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, #6366f1, transparent 70%);
-  top: -150px;
-  left: -150px;
-  filter: blur(120px);
-  opacity: 0.35;
-  animation: blobMove1 20s infinite alternate ease-in-out;
-  z-index: -1;
+body::before{
+content:"";
+position:fixed;
+width:600px;
+height:600px;
+background:radial-gradient(circle,#6366f1,transparent 70%);
+top:-200px;
+left:-200px;
+filter:blur(150px);
+opacity:0.4;
+animation:blobMove1 14s infinite alternate ease-in-out;
+z-index:-1;
 }
 
-body::after {
-  content: "";
-  position: fixed;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, #22c55e, transparent 70%);
-  bottom: -150px;
-  right: -150px;
-  filter: blur(120px);
-  opacity: 0.35;
-  animation: blobMove2 22s infinite alternate ease-in-out;
-  z-index: -1;
+body::after{
+content:"";
+position:fixed;
+width:600px;
+height:600px;
+background:radial-gradient(circle,#22c55e,transparent 70%);
+bottom:-200px;
+right:-200px;
+filter:blur(150px);
+opacity:0.4;
+animation:blobMove2 16s infinite alternate ease-in-out;
+z-index:-1;
 }
 
-/* Blob animations */
-
-@keyframes blobMove1 {
-  0% {
-    transform: translate(0px, 0px);
-  }
-  100% {
-    transform: translate(120px, 80px);
-  }
+@keyframes blobMove1{
+from{transform:translate(0,0);}
+to{transform:translate(150px,80px);}
 }
 
-@keyframes blobMove2 {
-  0% {
-    transform: translate(0px, 0px);
-  }
-  100% {
-    transform: translate(-120px, -80px);
-  }
+@keyframes blobMove2{
+from{transform:translate(0,0);}
+to{transform:translate(-150px,-80px);}
 }
 
-/* ============================= /
-/ REUSABLE GLASS COMPONENT /
-/ ============================= */
+/* =============================
+REUSABLE GLASS COMPONENT
+============================= */
 
 .glass{
 background:var(--glass-bg);
@@ -106,9 +92,9 @@ border-radius:14px;
 box-shadow:var(--glass-shadow);
 }
 
-/* ============================= /
-/ FILTER SECTION /
-/ ============================= */
+/* =============================
+FILTER SECTION
+============================= */
 
 .filterRow{
 display:flex;
@@ -141,9 +127,9 @@ justify-content:center;
 margin-bottom:20px;
 }
 
-/* ============================= /
-/ ICON BUTTONS /
-/ ============================= */
+/* =============================
+ICON BUTTONS
+============================= */
 
 .iconBtnBox{
 display:flex;
@@ -174,9 +160,9 @@ background:rgba(255,255,255,0.1);
 color:white;
 }
 
-/* ============================= /
-/ BUTTON STYLE /
-/ ============================= */
+/* =============================
+BUTTON STYLE
+============================= */
 
 button.btn-primary{
 background:linear-gradient(135deg,#4CAF50,#2ecc71);
@@ -190,9 +176,9 @@ transform:translateY(-2px);
 box-shadow:0 6px 18px rgba(0,0,0,0.5);
 }
 
-/* ============================= /
-/ TABLE /
-/ ============================= */
+/* =============================
+TABLE
+============================= */
 
 .table-container{
 overflow-x:auto;
@@ -226,9 +212,9 @@ background:rgba(255,255,255,0.08);
 transform:scale(1.01);
 }
 
-/* ============================= /
-/ ANALYTICS SECTION /
-/ ============================= */
+/* =============================
+ANALYTICS SECTION
+============================= */
 
 .analytics-card{
 padding:20px;
@@ -261,9 +247,9 @@ color:#e5e5e5;
 font-weight:600;
 }
 
-/* ============================= /
-/ CIRCULAR CHART FIX /
-/ ============================= */
+/* =============================
+CIRCULAR CHART FIX
+============================= */
 
 .circle-wrapper{
 display:flex;
@@ -273,9 +259,9 @@ gap:30px;
 margin-top:20px;
 }
 
-/* ============================= /
-/ CATEGORY PROGRESS /
-/ ============================= */
+/* =============================
+CATEGORY PROGRESS
+============================= */
 
 .category-progress-wrapper{
 margin-bottom:14px;
@@ -311,14 +297,16 @@ background:linear-gradient(90deg,#00ff9d,#2ecc71);
 background:linear-gradient(90deg,#ff4d4d,#ff7a7a);
 }
 
-/* ============================= /
-/ MODAL /
-/ ============================= */
+/* =============================
+MODAL
+============================= */
 
 .modal-content{
+background:rgba(20,20,20,0.9) !important;
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.15);
+color:white;
 border-radius:12px;
-border:none;
-box-shadow:0 10px 30px rgba(0,0,0,0.4);
 }
 
 .modal-header{
@@ -328,21 +316,28 @@ border-bottom:1px solid rgba(255,255,255,0.1);
 .modal input,
 .modal select,
 .modal textarea{
-background:white !important;
-color:black !important;
-border:1px solid #ccc !important;
+background:rgba(255,255,255,0.08) !important;
+color:white !important;
+border:1px solid rgba(255,255,255,0.25) !important;
+}
+
+.modal input::placeholder,
+.modal textarea::placeholder{
+color:rgba(255,255,255,0.6);
 }
 
 .modal input:focus,
 .modal select:focus,
 .modal textarea:focus{
-border-color:#f0c419 !important;
-box-shadow:0 0 5px rgba(240,196,25,0.6);
+background:rgba(255,255,255,0.12) !important;
+color:white !important;
+border:1px solid #2ecc71 !important;
+box-shadow:0 0 8px rgba(46,204,113,0.5);
 }
 
-/* ============================= /
-/ DASHBOARD STATS /
-/ ============================= */
+/* =============================
+DASHBOARD STATS
+============================= */
 
 .stats-container{
 display:flex;
@@ -378,9 +373,25 @@ margin-top:10px;
 font-size:26px;
 }
 
-/* ============================= /
-/ MOBILE /
-/ ============================= */
+/* =============================
+DROPDOWN FIX
+============================= */
+
+select,
+.form-select{
+background-color:#1e1e1e !important;
+color:white !important;
+border:1px solid rgba(255,255,255,0.2) !important;
+}
+
+select option{
+background-color:#ffffff;
+color:#000000;
+}
+
+/* =============================
+MOBILE
+============================= */
 
 @media(max-width:768px){
 
@@ -397,51 +408,4 @@ canvas{
 max-width:100%!important;
 }
 
-}
-/* ===== Glass Inputs Fix (Add Transaction Modal) ===== */
-
-.modal-content{
-  background: rgba(20,20,20,0.9) !important;
-  backdrop-filter: blur(20px);
-  border:1px solid rgba(255,255,255,0.15);
-  color:white;
-}
-
-.modal input,
-.modal select,
-.modal textarea{
-  background: rgba(255,255,255,0.08) !important;
-  color: white !important;
-  border:1px solid rgba(255,255,255,0.25) !important;
-}
-
-/* Placeholder color */
-
-.modal input::placeholder,
-.modal textarea::placeholder{
-  color: rgba(255,255,255,0.6);
-}
-
-/* When typing */
-
-.modal input:focus,
-.modal select:focus,
-.modal textarea:focus{
-  background: rgba(255,255,255,0.12) !important;
-  color:white !important;
-  border:1px solid #2ecc71 !important;
-  box-shadow:0 0 8px rgba(46,204,113,0.5);
-}
-/* Fix dropdown option visibility */
-
-select,
-.form-select {
-  background-color: #1e1e1e !important;
-  color: white !important;
-  border: 1px solid rgba(255,255,255,0.2) !important;
-}
-
-select option {
-  background-color: #ffffff;
-  color: #000000;
 }
