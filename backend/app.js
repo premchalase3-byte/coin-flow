@@ -89,6 +89,13 @@ const PORT = process.env.PORT || 5000;
 /* ============================= */
 /* Connect MongoDB then Start */
 /* ============================= */
+app.get("/ping", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Server is running",
+    time: new Date()
+  });
+});
 
 connectDB().then(() => {
   app.listen(PORT, () => {
