@@ -1,5 +1,3 @@
-// src/components/Navbar.js
-
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
@@ -9,88 +7,96 @@ import axios from "axios";
 
 const Navbar = () => {
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
+const handleLogout = () => {
 
-  const handleDownload = async () => {
+// remove user session
+localStorage.removeItem("user");
 
-    const userData = localStorage.getItem("user");
+// redirect to login
+navigate("/login", { replace: true });
 
-    if (!userData) {
-      alert("Please login first");
-      return;
-    }
+// force UI refresh to reset state
+window.location.reload();
 
-    const user = JSON.parse(userData);
+};
 
-    try {
+const handleDownload = async () => {
 
-      const { data } = await axios.post(getTransactions,{
-        userId: user._id,
-        frequency: "365",
-        type: "all",
-      });
+const userData = localStorage.getItem("user");
 
-      const transactions = data.transactions || [];
+if (!userData) {
+  alert("Please login first");
+  return;
+}
 
-      if(transactions.length === 0){
-        alert("No transactions to download!");
-        return;
-      }
+const user = JSON.parse(userData);
 
-      const worksheet = XLSX.utils.json_to_sheet(transactions);
-      const workbook = XLSX.utils.book_new();
+try {
 
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
+  const { data } = await axios.post(getTransactions,{
+    userId: user._id,
+    frequency: "365",
+    type: "all",
+  });
 
-      XLSX.writeFile(workbook,"CoinFlow_Transactions.xlsx");
+  const transactions = data.transactions || [];
 
-    } catch (error) {
+  if(transactions.length === 0){
+    alert("No transactions to download!");
+    return;
+  }
 
-      console.error(error);
-      alert("Failed to download Excel");
+  const worksheet = XLSX.utils.json_to_sheet(transactions);
+  const workbook = XLSX.utils.book_new();
 
-    }
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
 
-  };
+  XLSX.writeFile(workbook,"CoinFlow_Transactions.xlsx");
 
-  return (
+} catch (error) {
 
-    <div className="navbar">
+  console.error(error);
+  alert("Failed to download Excel");
 
-      <div className="logo">
-        Coin-Flow
-      </div>
+}
 
-      <div className="nav-links">
+};
 
-        <Link to="/">Dashboard</Link>
+return (
 
-        <button
-          className="logout-btn"
-          onClick={handleDownload}
-        >
-          Download Excel
-        </button>
+<div className="navbar">
 
-        <Link to="/about">About Us</Link>
+  <div className="logo">
+    Coin-Flow
+  </div>
 
-        <button
-          className="logout-btn"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
+  <div className="nav-links">
 
-      </div>
+    <Link to="/">Dashboard</Link>
 
-    </div>
+    <button
+      className="logout-btn"
+      onClick={handleDownload}
+    >
+      Download Excel
+    </button>
 
-  );
+    <Link to="/about">About Us</Link>
+
+    <button
+      className="logout-btn"
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
+
+  </div>
+
+</div>
+
+);
 
 };
 
