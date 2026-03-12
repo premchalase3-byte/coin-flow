@@ -69,3 +69,9 @@
   }
 
 }
+
+.navbar{
+  background: rgba(20,20,20,0.6) !important;
+  backdrop-filter: blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
