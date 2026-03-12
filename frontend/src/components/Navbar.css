@@ -1,77 +1,123 @@
+/* ============================= */
+/* GLASS NAVBAR */
+/* ============================= */
+
 .navbar{
   display:flex;
-  flex-direction:row;
   justify-content:space-between;
   align-items:center;
+
   padding:12px 30px;
-  background-color:#111;
-  color:white;
   height:60px;
+
   position:fixed;
   top:0;
   left:0;
   width:100%;
   z-index:1000;
+
+  background:rgba(20,20,20,0.6);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+
+  border-bottom:1px solid rgba(255,255,255,0.1);
+
+  color:white;
 }
 
+/* ============================= */
+/* LOGO */
+/* ============================= */
+
 .logo{
+  font-size:20px;
   font-weight:600;
   letter-spacing:1px;
+  color:white;
 }
+
+/* ============================= */
+/* NAV LINKS */
+/* ============================= */
 
 .nav-links{
   display:flex;
-  gap:20px;
   align-items:center;
+  gap:25px;
 }
 
+/* Link style */
+
 .nav-links a{
+  position:relative;
   color:white;
   text-decoration:none;
   font-weight:500;
-  transition:color 0.2s ease;
+  font-size:15px;
+  transition:0.3s;
 }
 
+/* Glow hover */
+
 .nav-links a:hover{
-  color:#0d6efd;
+  color:#4CAF50;
 }
+
+/* Underline animation */
+
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-4px;
+
+  width:0%;
+  height:2px;
+  background:#4CAF50;
+
+  transition:0.3s;
+}
+
+.nav-links a:hover::after{
+  width:100%;
+}
+
+/* ============================= */
+/* LOGOUT BUTTON */
+/* ============================= */
 
 .logout-btn{
   background:none;
   border:none;
   color:white;
+  font-size:15px;
   font-weight:500;
   cursor:pointer;
-  font-size:16px;
-  padding:0;
-  transition:color 0.2s ease;
+
+  transition:0.3s;
 }
 
 .logout-btn:hover{
   color:#ff4d4d;
 }
 
-/* MOBILE FIX */
+/* ============================= */
+/* MOBILE RESPONSIVE */
+/* ============================= */
 
 @media(max-width:768px){
 
   .navbar{
     flex-direction:column;
     height:auto;
-    padding:10px;
-    gap:8px;
+    padding:12px;
+    gap:10px;
   }
 
   .nav-links{
     flex-wrap:wrap;
     justify-content:center;
-    gap:10px;
+    gap:12px;
   }
 
-}
-
-.navbar{
-  background: rgba(20,20,20,0.6) !important;
-  backdrop-filter: blur(16px);
-  border-bottom:1px solid rgba(255,255,255,0.1);
 }

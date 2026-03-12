@@ -7,240 +7,293 @@ import "./home.css";
 import { deleteTransactions, editTransactions } from "../../utils/ApiRequest";
 import axios from "axios";
 
-const TableData = (props) => {
-  const [show, setShow] = useState(false);
-  const [transactions, setTransactions] = useState([]);
-  const [editingTransaction, setEditingTransaction] = useState(null);
-  const [currId, setCurrId] = useState(null);
-  const [refresh, setRefresh] = useState(false);
-  const handleEditClick = (itemKey) => {
-    if (transactions.length > 0) {
-      const editTran = props.data.filter((item) => item._id === itemKey);
-      setCurrId(itemKey);
-      setEditingTransaction(editTran);
-      handleShow();
-    }
-  };
+const TableData = ({ data, user }) => {
 
-  const handleEditSubmit = async () => {
-    const { data } = await axios.put(`${editTransactions}/${currId}`, {
-      ...values,
-    });
+const [show, setShow] = useState(false);
+const [transactions, setTransactions] = useState([]);
+const [editingTransaction, setEditingTransaction] = useState(null);
+const [currId, setCurrId] = useState(null);
 
-    if (data.success === true) {
-      await handleClose();
-      await setRefresh(!refresh);
-      window.location.reload();
-    } else {
-      console.log("error");
-    }
-  };
+const [values, setValues] = useState({
+title: "",
+amount: "",
+description: "",
+category: "",
+date: "",
+transactionType: "",
+});
 
-  const handleDeleteClick = async (itemKey) => {
-    setCurrId(itemKey);
+const handleClose = () => {
+setShow(false);
+setEditingTransaction(null);
+};
 
-    const { data } = await axios.post(`${deleteTransactions}/${itemKey}`, {
-      userId: props.user._id,
-    });
+const handleShow = () => setShow(true);
 
-    if (data.success === true) {
-      await setRefresh(!refresh);
-      window.location.reload();
-    } else {
-      console.log("error");
-    }
-  };
+useEffect(() => {
+setTransactions(data);
+}, [data]);
 
-  const [values, setValues] = useState({
-    title: "",
-    amount: "",
-    description: "",
-    category: "",
-    date: "",
-    transactionType: "",
+/* ============================= /
+/ EDIT TRANSACTION /
+/ ============================= */
+
+const handleEditClick = (item) => {
+
+setCurrId(item._id);
+
+setEditingTransaction(item);
+
+setValues({
+  title: item.title,
+  amount: item.amount,
+  description: item.description,
+  category: item.category,
+  date: item.date?.substring(0,10),
+  transactionType: item.transactionType,
+});
+
+handleShow();
+
+};
+
+const handleEditSubmit = async () => {
+
+try{
+
+  const { data } = await axios.put(`${editTransactions}/${currId}`,{
+    ...values
   });
 
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+  if(data.success){
+    window.location.reload();
+  }
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+}catch(err){
+  console.log(err);
+}
 
-  useEffect(() => {
-    setTransactions(props.data);
-  }, [props.data, props.user, refresh]);
+};
 
-  return (
-    <>
-      <Container>
-        <Table responsive="md" className="data-table">
-          <thead>
-            <tr>
-              <th className="table-header">Date</th>
-              <th className="table-header">Title</th>
-              <th className="table-header">Amount</th>
-              <th className="table-header">Type</th>
-              <th className="table-header">Category</th>
-              <th className="table-header">Action</th>
-            </tr>
-          </thead>
+/* ============================= /
+/ DELETE TRANSACTION /
+/ ============================= */
 
-          <tbody className="text-white">
-            {props.data.map((item, index) => (
-              <tr key={index}>
-                <td>{moment(item.date).format("YYYY-MM-DD")}</td>
-                <td>{item.title}</td>
-                <td>{item.amount}</td>
-                <td>{item.transactionType}</td>
-                <td>{item.category}</td>
+const handleDeleteClick = async (id) => {
 
-                <td>
-                  <div className="icons-handle">
+try{
 
-                    <EditNoteIcon
-                      sx={{ cursor: "pointer" }}
-                      id={item._id}
-                      onClick={() => handleEditClick(item._id)}
-                    />
+  const { data } = await axios.post(`${deleteTransactions}/${id}`,{
+    userId: user._id
+  });
 
-                    <DeleteForeverIcon
-                      sx={{ color: "red", cursor: "pointer" }}
-                      id={item._id}
-                      onClick={() => handleDeleteClick(item._id)}
-                    />
+  if(data.success){
+    window.location.reload();
+  }
 
-                    {editingTransaction && (
-                      <Modal show={show} onHide={handleClose} centered>
+}catch(err){
+  console.log(err);
+}
 
-                        <Modal.Header closeButton>
-                          <Modal.Title>
-                            Update Transaction Details
-                          </Modal.Title>
-                        </Modal.Header>
+};
 
-                        <Modal.Body>
-                          <Form>
+const handleChange = (e) => {
+setValues({
+...values,
+[e.target.name]: e.target.value
+});
+};
 
-                            <Form.Group className="mb-3">
-                              <Form.Label>Title</Form.Label>
-                              <Form.Control
-                                name="title"
-                                type="text"
-                                placeholder={editingTransaction[0].title}
-                                value={values.title}
-                                onChange={handleChange}
-                              />
-                            </Form.Group>
+/* ============================= */
 
-                            <Form.Group className="mb-3">
-                              <Form.Label>Amount</Form.Label>
-                              <Form.Control
-                                name="amount"
-                                type="number"
-                                placeholder={editingTransaction[0].amount}
-                                value={values.amount}
-                                onChange={handleChange}
-                              />
-                            </Form.Group>
+return (
+<Container>
 
-                            <Form.Group className="mb-3">
-                              <Form.Label>Category</Form.Label>
-                              <Form.Select
-                                name="category"
-                                value={values.category}
-                                onChange={handleChange}
-                              >
-                                <option value="">
-                                  {editingTransaction[0].category}
-                                </option>
-                                <option value="Groceries">Groceries</option>
-                                <option value="Rent">Rent</option>
-                                <option value="Salary">Salary</option>
-                                <option value="Tip">Tip</option>
-                                <option value="Food">Food</option>
-                                <option value="Medical">Medical</option>
-                                <option value="Utilities">Utilities</option>
-                                <option value="Entertainment">
-                                  Entertainment
-                                </option>
-                                <option value="Transportation">
-                                  Transportation
-                                </option>
-                                <option value="Other">Other</option>
-                              </Form.Select>
-                            </Form.Group>
+  <Table responsive="md" className="data-table">
 
-                            <Form.Group className="mb-3">
-                              <Form.Label>Description</Form.Label>
-                              <Form.Control
-                                type="text"
-                                name="description"
-                                placeholder={
-                                  editingTransaction[0].description
-                                }
-                                value={values.description}
-                                onChange={handleChange}
-                              />
-                            </Form.Group>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Title</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>Category</th>
+        <th>Action</th>
+      </tr>
+    </thead>
 
-                            <Form.Group className="mb-3">
-                              <Form.Label>Transaction Type</Form.Label>
+    <tbody className="text-white">
 
-                              <Form.Select
-                                name="transactionType"
-                                value={values.transactionType}
-                                onChange={handleChange}
-                              >
-                                <option value={editingTransaction[0].transactionType}>
-                                  {editingTransaction[0].transactionType}
-                                </option>
+      {transactions.map((item) => (
 
-                                <option value="income">Income</option>
-                                <option value="expense">Expense</option>
+        <tr key={item._id}>
 
-                              </Form.Select>
-                            </Form.Group>
+          <td>{moment(item.date).format("YYYY-MM-DD")}</td>
 
-                            <Form.Group className="mb-3">
-                              <Form.Label>Date</Form.Label>
-                              <Form.Control
-                                type="date"
-                                name="date"
-                                value={values.date}
-                                onChange={handleChange}
-                              />
-                            </Form.Group>
+          <td>{item.title}</td>
 
-                          </Form>
-                        </Modal.Body>
+          <td>₹ {item.amount}</td>
 
-                        <Modal.Footer>
-                          <Button variant="secondary" onClick={handleClose}>
-                            Close
-                          </Button>
+          <td style={{
+            color: item.transactionType === "income"
+            ? "#2ecc71"
+            : "#ff4d4d"
+          }}>
+            {item.transactionType}
+          </td>
 
-                          <Button
-                            variant="primary"
-                            type="submit"
-                            onClick={handleEditSubmit}
-                          >
-                            Submit
-                          </Button>
-                        </Modal.Footer>
+          <td>{item.category}</td>
 
-                      </Modal>
-                    )}
+          <td>
 
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Container>
-    </>
-  );
+            <div className="icons-handle">
+
+              <EditNoteIcon
+                sx={{ cursor:"pointer" }}
+                onClick={() => handleEditClick(item)}
+              />
+
+              <DeleteForeverIcon
+                sx={{ color:"red", cursor:"pointer" }}
+                onClick={() => handleDeleteClick(item._id)}
+              />
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      ))}
+
+    </tbody>
+
+  </Table>
+
+  {/* ============================= */}
+  {/* EDIT MODAL */}
+  {/* ============================= */}
+
+  {editingTransaction && (
+
+    <Modal show={show} onHide={handleClose} centered>
+
+      <Modal.Header closeButton>
+        <Modal.Title>
+          Update Transaction
+        </Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+
+        <Form>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              name="title"
+              type="text"
+              value={values.title}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Amount</Form.Label>
+            <Form.Control
+              name="amount"
+              type="number"
+              value={values.amount}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              type="text"
+              name="description"
+              value={values.description}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Category</Form.Label>
+
+            <Form.Select
+              name="category"
+              value={values.category}
+              onChange={handleChange}
+            >
+
+              <option value="Groceries">Groceries</option>
+              <option value="Rent">Rent</option>
+              <option value="Salary">Salary</option>
+              <option value="Tip">Tip</option>
+              <option value="Food">Food</option>
+              <option value="Medical">Medical</option>
+              <option value="Utilities">Utilities</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Transportation">Transportation</option>
+              <option value="Other">Other</option>
+
+            </Form.Select>
+
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Transaction Type</Form.Label>
+
+            <Form.Select
+              name="transactionType"
+              value={values.transactionType}
+              onChange={handleChange}
+            >
+
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+
+            </Form.Select>
+
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Date</Form.Label>
+
+            <Form.Control
+              type="date"
+              name="date"
+              value={values.date}
+              onChange={handleChange}
+            />
+
+          </Form.Group>
+
+        </Form>
+
+      </Modal.Body>
+
+      <Modal.Footer>
+
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+
+        <Button variant="primary" onClick={handleEditSubmit}>
+          Update
+        </Button>
+
+      </Modal.Footer>
+
+    </Modal>
+
+  )}
+
+</Container>
+
+);
+
 };
 
 export default TableData;

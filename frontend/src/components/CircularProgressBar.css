@@ -1,76 +1,68 @@
-.circular-progressbar {
-    display: inline-block;
-    position: relative;
-    width: 100px;
-    height: 100px;
-  }
+/* =============================== */
+/* MODERN CIRCULAR PROGRESS BAR */
+/* =============================== */
 
-  @keyframes progressAnimation {
-    from {
-      stroke-dashoffset: var(--circumference);
-    }
-    to {
-      stroke-dashoffset: var(--progress);
-    }
-  }
-  
-  .circular-progressbar .circle {
-    stroke: var(--color);
-    fill: transparent;
-    stroke-width: 7;
-    stroke-linecap: round;
-    transform-origin: 50% 50%;
-    transform: rotate(-90deg);
-    transition: stroke-dashoffset 2s linear;
-  }
-
-  .circular-progressbar .circle.animating {
-    animation: progressAnimation 3s linear forwards;
-  }
-  
-  .circular-progressbar .bg {
-    stroke: #d3d3d3;
-  }
-  
-  .circular-progressbar .percentage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    line-height: 100px;
-    font-size: 20px;
-  }
-  .circular-progressbar {
+.circular-progressbar{
   position: relative;
-  width: 120px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 110px;
+  height: 110px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.circular-progressbar svg {
+/* SVG */
+
+.circular-progressbar svg{
+  width:100%;
+  height:100%;
   transform: rotate(-90deg);
 }
 
-.circle-bg {
-  fill: none;
-  stroke: rgba(255,255,255,0.1);
-  stroke-width: 10;
+/* Background circle */
+
+.circular-progressbar .bg{
+  fill:none;
+  stroke:rgba(255,255,255,0.12);
+  stroke-width:10;
 }
 
-.circle-progress {
-  fill: none;
-  stroke-width: 10;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1.2s ease;
+/* Progress circle */
+
+.circular-progressbar .circle{
+  fill:none;
+  stroke-width:10;
+  stroke-linecap:round;
+  transition:stroke-dashoffset 1.2s ease;
 }
 
-.percentage {
-  position: absolute;
-  font-size: 18px;
-  font-weight: 700;
-  color: white;
+/* Percentage text */
+
+.circular-progressbar .percentage{
+  position:absolute;
+  font-size:18px;
+  font-weight:700;
+  color:white;
+  letter-spacing:0.5px;
+}
+
+/* Hover glow */
+
+.circular-progressbar:hover .circle{
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+  .circular-progressbar{
+    width:90px;
+    height:90px;
+  }
+
+  .circular-progressbar .percentage{
+    font-size:16px;
+  }
+
 }

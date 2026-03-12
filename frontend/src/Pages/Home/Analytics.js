@@ -8,263 +8,250 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 
 const Analytics = ({ transactions }) => {
 
-  const TotalTransactions = transactions.length;
+const TotalTransactions = transactions.length;
 
-  const totalIncomeTransactions = transactions.filter(
-    (item) => item.transactionType === "income"
-  );
+const totalIncomeTransactions = transactions.filter(
+(item) => item.transactionType === "income"
+);
 
-  const totalExpenseTransactions = transactions.filter(
-    (item) => item.transactionType === "expense"
-  );
+const totalExpenseTransactions = transactions.filter(
+(item) => item.transactionType === "expense"
+);
 
-  let totalIncomePercent =
-    (totalIncomeTransactions.length / TotalTransactions) * 100 || 0;
+const totalIncomePercent =
+TotalTransactions > 0
+? (totalIncomeTransactions.length / TotalTransactions) * 100
+: 0;
 
-  let totalExpensePercent =
-    (totalExpenseTransactions.length / TotalTransactions) * 100 || 0;
+const totalExpensePercent =
+TotalTransactions > 0
+? (totalExpenseTransactions.length / TotalTransactions) * 100
+: 0;
 
-  const totalTurnOver = transactions.reduce(
-    (acc, transaction) => acc + transaction.amount,
-    0
-  );
+const totalTurnOver = transactions.reduce(
+(acc, transaction) => acc + transaction.amount,
+0
+);
 
-  const totalTurnOverIncome = transactions
-    .filter((item) => item.transactionType === "income")
-    .reduce((acc, transaction) => acc + transaction.amount, 0);
+const totalTurnOverIncome = transactions
+.filter((item) => item.transactionType === "income")
+.reduce((acc, transaction) => acc + transaction.amount, 0);
 
-  const totalTurnOverExpense = transactions
-    .filter((item) => item.transactionType === "expense")
-    .reduce((acc, transaction) => acc + transaction.amount, 0);
+const totalTurnOverExpense = transactions
+.filter((item) => item.transactionType === "expense")
+.reduce((acc, transaction) => acc + transaction.amount, 0);
 
-  const TurnOverIncomePercent =
-    (totalTurnOverIncome / totalTurnOver) * 100 || 0;
+const TurnOverIncomePercent =
+totalTurnOver > 0 ? (totalTurnOverIncome / totalTurnOver) * 100 : 0;
 
-  const TurnOverExpensePercent =
-    (totalTurnOverExpense / totalTurnOver) * 100 || 0;
+const TurnOverExpensePercent =
+totalTurnOver > 0 ? (totalTurnOverExpense / totalTurnOver) * 100 : 0;
 
-  const categories = [
-    "Groceries",
-    "Rent",
-    "Salary",
-    "Tip",
-    "Food",
-    "Medical",
-    "Utilities",
-    "Entertainment",
-    "Transportation",
-    "Other",
-  ];
+const categories = [
+"Groceries",
+"Rent",
+"Salary",
+"Tip",
+"Food",
+"Medical",
+"Utilities",
+"Entertainment",
+"Transportation",
+"Other",
+];
 
-  const colors = {
-    Groceries: "#ff6384",
-    Rent: "#36a2eb",
-    Salary: "#ffce56",
-    Tip: "#4bc0c0",
-    Food: "#9966ff",
-    Medical: "#ff9f40",
-    Utilities: "#8ac926",
-    Entertainment: "#6a4c93",
-    Transportation: "#1982c4",
-    Other: "#f45b69",
-  };
+const colors = {
+Groceries: "#ff6384",
+Rent: "#36a2eb",
+Salary: "#ffce56",
+Tip: "#4bc0c0",
+Food: "#9966ff",
+Medical: "#ff9f40",
+Utilities: "#8ac926",
+Entertainment: "#6a4c93",
+Transportation: "#1982c4",
+Other: "#f45b69",
+};
 
-  return (
-    <Container className="mt-4">
-      <Row className="g-4">
+return (
+<Container className="mt-4">
+<Row className="g-4">
 
-        {/* TOTAL TRANSACTIONS */}
+    {/* TOTAL TRANSACTIONS */}
 
-        <div className="col-lg-3 col-md-6">
-          <div className="card analytics-card h-100">
+    <div className="col-lg-3 col-md-6">
+      <div className="card analytics-card h-100">
 
-            <div className="card-header">
-              Total Transactions
-            </div>
-
-            <div className="card-body text-center">
-
-              <h4 style={{color:"#fff"}}>{TotalTransactions}</h4>
-
-              <p style={{color:"#2ecc71"}}>
-                <ArrowDropUpIcon/> Income {totalIncomeTransactions.length}
-              </p>
-
-              <p style={{color:"#ff4d4d"}}>
-                <ArrowDropDownIcon/> Expense {totalExpenseTransactions.length}
-              </p>
-
-              <div className="circle-wrapper">
-
-                <CircularProgressBar
-                  percentage={totalIncomePercent.toFixed(0)}
-                  color="#2ecc71"
-                />
-
-                <CircularProgressBar
-                  percentage={totalExpensePercent.toFixed(0)}
-                  color="#ff4d4d"
-                />
-
-              </div>
-
-            </div>
-
-          </div>
+        <div className="card-header">
+          Total Transactions
         </div>
 
+        <div className="card-body text-center">
 
-        {/* TOTAL TURNOVER */}
+          <h3 style={{ color: "#ffffff", marginBottom: "10px" }}>
+            {TotalTransactions}
+          </h3>
 
-        <div className="col-lg-3 col-md-6">
-          <div className="card analytics-card h-100">
+          <p style={{ color: "#2ecc71", marginBottom: "4px" }}>
+            <ArrowDropUpIcon /> Income: {totalIncomeTransactions.length}
+          </p>
 
-            <div className="card-header">
-              Total Turnover
-            </div>
+          <p style={{ color: "#ff4d4d" }}>
+            <ArrowDropDownIcon /> Expense: {totalExpenseTransactions.length}
+          </p>
 
-            <div className="card-body text-center">
+          <div className="circle-wrapper">
 
-              <h4 style={{color:"#fff"}}>
-                ₹ {totalTurnOver}
-              </h4>
+            <CircularProgressBar
+              percentage={totalIncomePercent.toFixed(0)}
+              color="#2ecc71"
+            />
 
-              <p style={{color:"#2ecc71"}}>
-                <ArrowDropUpIcon/>
-                {totalTurnOverIncome}
-                <CurrencyRupeeIcon fontSize="small"/>
-              </p>
-
-              <p style={{color:"#ff4d4d"}}>
-                <ArrowDropDownIcon/>
-                {totalTurnOverExpense}
-                <CurrencyRupeeIcon fontSize="small"/>
-              </p>
-
-              <div className="circle-wrapper">
-
-                <CircularProgressBar
-                  percentage={TurnOverIncomePercent.toFixed(0)}
-                  color="#2ecc71"
-                />
-
-                <CircularProgressBar
-                  percentage={TurnOverExpensePercent.toFixed(0)}
-                  color="#ff4d4d"
-                />
-
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-
-
-        {/* CATEGORYWISE INCOME */}
-
-        <div className="col-lg-3 col-md-6">
-
-          <div className="card analytics-card h-100">
-
-            <div className="card-header">
-              Categorywise Income
-            </div>
-
-            <div className="card-body">
-
-              {categories.map((category) => {
-
-                const income = transactions
-                  .filter(
-                    (transaction) =>
-                      transaction.transactionType === "income" &&
-                      transaction.category === category
-                  )
-                  .reduce(
-                    (acc, transaction) => acc + transaction.amount,
-                    0
-                  );
-
-                const incomePercent =
-                  (income / totalTurnOver) * 100 || 0;
-
-                return (
-                  <>
-                    {income > 0 && (
-
-                      <LineProgressBar
-                        label={category}
-                        percentage={incomePercent.toFixed(0)}
-                        lineColor={colors[category]}
-                      />
-
-                    )}
-                  </>
-                );
-
-              })}
-
-            </div>
+            <CircularProgressBar
+              percentage={totalExpensePercent.toFixed(0)}
+              color="#ff4d4d"
+            />
 
           </div>
 
         </div>
 
+      </div>
+    </div>
 
-        {/* CATEGORYWISE EXPENSE */}
 
-        <div className="col-lg-3 col-md-6">
+    {/* TOTAL TURNOVER */}
 
-          <div className="card analytics-card h-100">
+    <div className="col-lg-3 col-md-6">
+      <div className="card analytics-card h-100">
 
-            <div className="card-header">
-              Categorywise Expense
-            </div>
+        <div className="card-header">
+          Total Turnover
+        </div>
 
-            <div className="card-body">
+        <div className="card-body text-center">
 
-              {categories.map((category) => {
+          <h3 style={{ color: "#ffffff", marginBottom: "10px" }}>
+            ₹ {totalTurnOver}
+          </h3>
 
-                const expenses = transactions
-                  .filter(
-                    (transaction) =>
-                      transaction.transactionType === "expense" &&
-                      transaction.category === category
-                  )
-                  .reduce(
-                    (acc, transaction) => acc + transaction.amount,
-                    0
-                  );
+          <p style={{ color: "#2ecc71", marginBottom: "4px" }}>
+            <ArrowDropUpIcon />
+            {totalTurnOverIncome} <CurrencyRupeeIcon fontSize="small" />
+          </p>
 
-                const expensePercent =
-                  (expenses / totalTurnOver) * 100 || 0;
+          <p style={{ color: "#ff4d4d" }}>
+            <ArrowDropDownIcon />
+            {totalTurnOverExpense} <CurrencyRupeeIcon fontSize="small" />
+          </p>
 
-                return (
-                  <>
-                    {expenses > 0 && (
+          <div className="circle-wrapper">
 
-                      <LineProgressBar
-                        label={category}
-                        percentage={expensePercent.toFixed(0)}
-                        lineColor={colors[category]}
-                      />
+            <CircularProgressBar
+              percentage={TurnOverIncomePercent.toFixed(0)}
+              color="#2ecc71"
+            />
 
-                    )}
-                  </>
-                );
-
-              })}
-
-            </div>
+            <CircularProgressBar
+              percentage={TurnOverExpensePercent.toFixed(0)}
+              color="#ff4d4d"
+            />
 
           </div>
 
         </div>
 
-      </Row>
-    </Container>
-  );
+      </div>
+    </div>
+
+
+    {/* CATEGORYWISE INCOME */}
+
+    <div className="col-lg-3 col-md-6">
+      <div className="card analytics-card h-100">
+
+        <div className="card-header">
+          Categorywise Income
+        </div>
+
+        <div className="card-body">
+
+          {categories.map((category, index) => {
+
+            const income = transactions
+              .filter(
+                (transaction) =>
+                  transaction.transactionType === "income" &&
+                  transaction.category === category
+              )
+              .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+            const incomePercent =
+              totalTurnOver > 0 ? (income / totalTurnOver) * 100 : 0;
+
+            return (
+              income > 0 && (
+                <LineProgressBar
+                  key={index}
+                  label={category}
+                  percentage={incomePercent.toFixed(0)}
+                  lineColor={colors[category]}
+                />
+              )
+            );
+          })}
+
+        </div>
+
+      </div>
+    </div>
+
+
+    {/* CATEGORYWISE EXPENSE */}
+
+    <div className="col-lg-3 col-md-6">
+      <div className="card analytics-card h-100">
+
+        <div className="card-header">
+          Categorywise Expense
+        </div>
+
+        <div className="card-body">
+
+          {categories.map((category, index) => {
+
+            const expenses = transactions
+              .filter(
+                (transaction) =>
+                  transaction.transactionType === "expense" &&
+                  transaction.category === category
+              )
+              .reduce((acc, transaction) => acc + transaction.amount, 0);
+
+            const expensePercent =
+              totalTurnOver > 0 ? (expenses / totalTurnOver) * 100 : 0;
+
+            return (
+              expenses > 0 && (
+                <LineProgressBar
+                  key={index}
+                  label={category}
+                  percentage={expensePercent.toFixed(0)}
+                  lineColor={colors[category]}
+                />
+              )
+            );
+          })}
+
+        </div>
+
+      </div>
+    </div>
+
+  </Row>
+</Container>
+
+);
 };
 
 export default Analytics;
