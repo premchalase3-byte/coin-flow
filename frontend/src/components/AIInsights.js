@@ -5,17 +5,16 @@ const AIInsights = ({ transactions }) => {
 
   const [insight, setInsight] = useState("");
 
-  useEffect(() => {
-
-    if (!transactions || transactions.length === 0) return;
-
-    generateInsights();
-
-  }, [transactions]);
-
-
+  /* ========================= */
+  /* Generate Insight */
+  /* ========================= */
 
   const generateInsights = () => {
+
+    if (!transactions || transactions.length === 0) {
+      setInsight("Add some transactions to receive AI financial insights.");
+      return;
+    }
 
     const expenses = transactions.filter(
       (t) => t.transactionType === "expense"
@@ -33,7 +32,6 @@ const AIInsights = ({ transactions }) => {
 
     });
 
-
     let highestCategory = "";
     let highestAmount = 0;
 
@@ -48,13 +46,21 @@ const AIInsights = ({ transactions }) => {
 
     const suggestedSaving = Math.round(highestAmount * 0.2);
 
-    const message = `You spent ₹${highestAmount} on ${highestCategory}. 
-Try reducing this by 20% to save about ₹${suggestedSaving}.`;
+    const message =
+      `You spent ₹${highestAmount} on ${highestCategory}. ` +
+      `Try reducing this by 20% to save about ₹${suggestedSaving}.`;
 
     setInsight(message);
 
   };
 
+  /* ========================= */
+  /* Run Insight when data changes */
+  /* ========================= */
+
+  useEffect(() => {
+    generateInsights();
+  }, [transactions]); // safe dependency
 
   return (
 
