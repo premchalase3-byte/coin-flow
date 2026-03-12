@@ -9,6 +9,7 @@ import TableData from "./TableData";
 import Analytics from "./Analytics";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AIChatbot from "../../components/AIChatbot";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,500 +21,472 @@ import "./home.css";
 
 const Home = () => {
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const toastOptions = {
-position: "bottom-right",
-autoClose: 2000,
-theme: "dark",
-};
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 2000,
+    theme: "dark",
+  };
 
-const [cUser, setcUser] = useState(null);
-const [loading, setLoading] = useState(false);
-const [transactions, setTransactions] = useState([]);
-const [refresh, setRefresh] = useState(false);
+  const [cUser, setcUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [transactions, setTransactions] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
-const [frequency, setFrequency] = useState("7");
-const [type, setType] = useState("all");
+  const [frequency, setFrequency] = useState("7");
+  const [type, setType] = useState("all");
 
-const [startDate, setStartDate] = useState(null);
-const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
-const [view, setView] = useState("table");
-const [show, setShow] = useState(false);
+  const [view, setView] = useState("table");
+  const [show, setShow] = useState(false);
 
-const [values, setValues] = useState({
-title: "",
-amount: "",
-description: "",
-category: "",
-date: "",
-transactionType: "",
-});
-
-/* ========================= /
-/ Dashboard Stats /
-/ ========================= */
-
-const totalIncome = transactions
-.filter((t) => t.transactionType === "income")
-.reduce((acc, curr) => acc + Number(curr.amount), 0);
-
-const totalExpense = transactions
-.filter((t) => t.transactionType === "expense")
-.reduce((acc, curr) => acc + Number(curr.amount), 0);
-
-const totalBalance = totalIncome - totalExpense;
-
-const totalTransactions = transactions.length;
-
-/* ========================= */
-
-const handleStartChange = (date) => setStartDate(date);
-const handleEndChange = (date) => setEndDate(date);
-
-const handleClose = () => setShow(false);
-const handleShow = () => setShow(true);
-
-/* ========================= /
-/ Check Login /
-/ ========================= */
-
-useEffect(() => {
-
-const userData = localStorage.getItem("user");
-
-if (!userData) {
-  navigate("/login");
-  return;
-}
-
-setcUser(JSON.parse(userData));
-setRefresh(true);
-
-}, [navigate]);
-
-/* ========================= */
-
-const handleChange = (e) => {
-setValues({
-...values,
-[e.target.name]: e.target.value
-});
-};
-
-/* ========================= */
-
-const handleSubmit = async (e) => {
-
-e.preventDefault();
-
-const { title, amount, description, category, date, transactionType } = values;
-
-if (!title || !amount || !description || !category || !date || !transactionType) {
-  toast.error("Please enter all fields", toastOptions);
-  return;
-}
-
-setLoading(true);
-
-try {
-
-  const { data } = await axios.post(addTransaction,{
-    ...values,
-    userId: cUser._id,
+  const [values, setValues] = useState({
+    title: "",
+    amount: "",
+    description: "",
+    category: "",
+    date: "",
+    transactionType: "",
   });
 
-  if(data.success){
+  /* ========================= */
+  /* Dashboard Stats */
+  /* ========================= */
 
-    toast.success(data.message, toastOptions);
+  const totalIncome = transactions
+    .filter((t) => t.transactionType === "income")
+    .reduce((acc, curr) => acc + Number(curr.amount), 0);
 
-    setShow(false);
+  const totalExpense = transactions
+    .filter((t) => t.transactionType === "expense")
+    .reduce((acc, curr) => acc + Number(curr.amount), 0);
 
+  const totalBalance = totalIncome - totalExpense;
+
+  const totalTransactions = transactions.length;
+
+  /* ========================= */
+
+  const handleStartChange = (date) => setStartDate(date);
+  const handleEndChange = (date) => setEndDate(date);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  /* ========================= */
+  /* Check Login */
+  /* ========================= */
+
+  useEffect(() => {
+
+    const userData = localStorage.getItem("user");
+
+    if (!userData) {
+      navigate("/login");
+      return;
+    }
+
+    setcUser(JSON.parse(userData));
+    setRefresh(true);
+
+  }, [navigate]);
+
+  /* ========================= */
+
+  const handleChange = (e) => {
     setValues({
-      title:"",
-      amount:"",
-      description:"",
-      category:"",
-      date:"",
-      transactionType:"",
+      ...values,
+      [e.target.name]: e.target.value
     });
+  };
 
-    setRefresh(!refresh);
+  /* ========================= */
 
-  } else {
+  const handleSubmit = async (e) => {
 
-    toast.error(data.message, toastOptions);
+    e.preventDefault();
 
-  }
+    const { title, amount, description, category, date, transactionType } = values;
 
-} catch(err){
+    if (!title || !amount || !description || !category || !date || !transactionType) {
+      toast.error("Please enter all fields", toastOptions);
+      return;
+    }
 
-  toast.error("Something went wrong!", toastOptions);
+    setLoading(true);
 
-}
+    try {
 
-setLoading(false);
+      const { data } = await axios.post(addTransaction, {
+        ...values,
+        userId: cUser._id,
+      });
 
-};
+      if (data.success) {
 
-/* ========================= */
+        toast.success(data.message, toastOptions);
 
-const handleReset = () => {
-setType("all");
-setFrequency("7");
-setStartDate(null);
-setEndDate(null);
-};
+        setShow(false);
 
-/* ========================= /
-/ Fetch Transactions /
-/ ========================= */
+        setValues({
+          title: "",
+          amount: "",
+          description: "",
+          category: "",
+          date: "",
+          transactionType: "",
+        });
 
-useEffect(() => {
+        setRefresh(!refresh);
 
-if (!cUser) return;
+      } else {
 
-const fetchTransactions = async () => {
+        toast.error(data.message, toastOptions);
 
-  setLoading(true);
+      }
 
-  try {
+    } catch (err) {
 
-    const { data } = await axios.post(getTransactions,{
-      userId: cUser._id,
-      frequency,
-      startDate,
-      endDate,
-      type,
-    });
+      toast.error("Something went wrong!", toastOptions);
 
-    setTransactions(data.transactions || []);
+    }
 
-  } catch(err){
+    setLoading(false);
 
-    console.error(err);
+  };
 
-  }
+  /* ========================= */
 
-  setLoading(false);
+  const handleReset = () => {
+    setType("all");
+    setFrequency("7");
+    setStartDate(null);
+    setEndDate(null);
+  };
 
-};
+  /* ========================= */
+  /* Fetch Transactions */
+  /* ========================= */
 
-fetchTransactions();
+  useEffect(() => {
 
-}, [refresh, cUser, frequency, startDate, endDate, type]);
+    if (!cUser) return;
 
-/* ========================= */
+    const fetchTransactions = async () => {
 
-const handleTableClick = () => setView("table");
-const handleChartClick = () => setView("chart");
+      setLoading(true);
 
-/* ========================= */
+      try {
 
-return (
+        const { data } = await axios.post(getTransactions, {
+          userId: cUser._id,
+          frequency,
+          startDate,
+          endDate,
+          type,
+        });
 
-<>
+        setTransactions(data.transactions || []);
 
-  <Navbar/>
+      } catch (err) {
 
-  <Container fluid style={{marginTop:"90px",minHeight:"100vh",padding:"20px"}}>
+        console.error(err);
 
-    {/* ========================= */}
-    {/* STAT CARDS */}
-    {/* ========================= */}
+      }
 
-    <div className="stats-container">
+      setLoading(false);
 
-      <div className="stat-card income">
-        <h5>Total Income</h5>
-        <h3>₹ {totalIncome}</h3>
-      </div>
+    };
 
-      <div className="stat-card expense">
-        <h5>Total Expense</h5>
-        <h3>₹ {totalExpense}</h3>
-      </div>
+    fetchTransactions();
 
-      <div className="stat-card balance">
-        <h5>Balance</h5>
-        <h3>₹ {totalBalance}</h3>
-      </div>
+  }, [refresh, cUser, frequency, startDate, endDate, type]);
 
-      <div className="stat-card transactions">
-        <h5>Total Transactions</h5>
-        <h3>{totalTransactions}</h3>
-      </div>
+  /* ========================= */
 
-    </div>
+  const handleTableClick = () => setView("table");
+  const handleChartClick = () => setView("chart");
 
-    {/* ========================= */}
-    {/* FILTER BAR */}
-    {/* ========================= */}
+  /* ========================= */
 
-    <div className="filterRow">
+  return (
 
-      <div className="text-white">
+    <>
 
-        <Form.Group>
+      <Navbar />
 
-          <Form.Label>Select Frequency</Form.Label>
+      <Container fluid style={{ marginTop: "90px", minHeight: "100vh", padding: "20px" }}>
 
-          <Form.Select
-            value={frequency}
-            onChange={(e)=>setFrequency(e.target.value)}
-          >
-            <option value="7">Last Week</option>
-            <option value="30">Last Month</option>
-            <option value="365">Last Year</option>
-            <option value="custom">Custom</option>
-          </Form.Select>
+        <div className="stats-container">
 
-        </Form.Group>
+          <div className="stat-card income">
+            <h5>Total Income</h5>
+            <h3>₹ {totalIncome}</h3>
+          </div>
 
-      </div>
+          <div className="stat-card expense">
+            <h5>Total Expense</h5>
+            <h3>₹ {totalExpense}</h3>
+          </div>
 
-      <div className="text-white">
+          <div className="stat-card balance">
+            <h5>Balance</h5>
+            <h3>₹ {totalBalance}</h3>
+          </div>
 
-        <Form.Group>
-
-          <Form.Label>Type</Form.Label>
-
-          <Form.Select
-            value={type}
-            onChange={(e)=>setType(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-          </Form.Select>
-
-        </Form.Group>
-
-      </div>
-
-      <div className="iconBtnBox">
-
-        <FormatListBulletedIcon
-          onClick={handleTableClick}
-          className={view==="table"?"iconActive":"iconDeactive"}
-        />
-
-        <BarChartIcon
-          onClick={handleChartClick}
-          className={view==="chart"?"iconActive":"iconDeactive"}
-        />
-
-      </div>
-
-      <div>
-
-        <Button onClick={handleShow} className="addNew">
-          Add New
-        </Button>
-
-        <Button onClick={handleShow} className="mobileBtn">
-          +
-        </Button>
-
-      </div>
-
-    </div>
-
-    {/* ========================= */}
-    {/* DATE FILTER */}
-    {/* ========================= */}
-
-    {frequency==="custom" && (
-
-      <div className="date">
-
-        <div className="form-group">
-          <label className="text-white">Start Date:</label>
-
-          <DatePicker
-            selected={startDate}
-            onChange={handleStartChange}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            className="form-control"
-          />
+          <div className="stat-card transactions">
+            <h5>Total Transactions</h5>
+            <h3>{totalTransactions}</h3>
+          </div>
 
         </div>
 
-        <div className="form-group">
+        <div className="filterRow">
 
-          <label className="text-white">End Date:</label>
+          <div className="text-white">
 
-          <DatePicker
-            selected={endDate}
-            onChange={handleEndChange}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-            className="form-control"
-          />
+            <Form.Group>
+              <Form.Label>Select Frequency</Form.Label>
+
+              <Form.Select
+                value={frequency}
+                onChange={(e) => setFrequency(e.target.value)}
+              >
+                <option value="7">Last Week</option>
+                <option value="30">Last Month</option>
+                <option value="365">Last Year</option>
+                <option value="custom">Custom</option>
+              </Form.Select>
+
+            </Form.Group>
+
+          </div>
+
+          <div className="text-white">
+
+            <Form.Group>
+              <Form.Label>Type</Form.Label>
+
+              <Form.Select
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                <option value="all">All</option>
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </Form.Select>
+
+            </Form.Group>
+
+          </div>
+
+          <div className="iconBtnBox">
+
+            <FormatListBulletedIcon
+              onClick={handleTableClick}
+              className={view === "table" ? "iconActive" : "iconDeactive"}
+            />
+
+            <BarChartIcon
+              onClick={handleChartClick}
+              className={view === "chart" ? "iconActive" : "iconDeactive"}
+            />
+
+          </div>
+
+          <div>
+
+            <Button onClick={handleShow} className="addNew">
+              Add New
+            </Button>
+
+            <Button onClick={handleShow} className="mobileBtn">
+              +
+            </Button>
+
+          </div>
 
         </div>
 
-      </div>
+        {frequency === "custom" && (
 
-    )}
+          <div className="date">
 
-    <div className="containerBtn">
+            <div className="form-group">
+              <label className="text-white">Start Date:</label>
 
-      <Button variant="primary" onClick={handleReset}>
-        Reset Filter
-      </Button>
+              <DatePicker
+                selected={startDate}
+                onChange={handleStartChange}
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+                className="form-control"
+              />
+            </div>
 
-    </div>
+            <div className="form-group">
 
-    {loading && <Spinner/>}
+              <label className="text-white">End Date:</label>
 
-    {!loading && view==="table" && (
+              <DatePicker
+                selected={endDate}
+                onChange={handleEndChange}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
+                className="form-control"
+              />
 
-      <div className="table-container">
-        <TableData data={transactions} user={cUser}/>
-      </div>
+            </div>
 
-    )}
+          </div>
 
-    {!loading && view==="chart" && (
+        )}
 
-      <div className="analytics-card">
-        <Analytics transactions={transactions}/>
-      </div>
+        <div className="containerBtn">
+          <Button variant="primary" onClick={handleReset}>
+            Reset Filter
+          </Button>
+        </div>
 
-    )}
+        {loading && <Spinner />}
 
-    <ToastContainer/>
+        {!loading && view === "table" && (
+          <div className="table-container">
+            <TableData data={transactions} user={cUser} />
+          </div>
+        )}
 
-  </Container>
+        {!loading && view === "chart" && (
+          <div className="analytics-card">
+            <Analytics transactions={transactions} />
+          </div>
+        )}
 
-  {/* ========================= */}
-  {/* ADD TRANSACTION MODAL */}
-  {/* ========================= */}
+        <ToastContainer />
 
-  <Modal show={show} onHide={handleClose} centered>
+      </Container>
 
-    <Modal.Header closeButton>
-      <Modal.Title>Add Transaction</Modal.Title>
-    </Modal.Header>
+      {/* Floating AI Chatbot */}
+      <AIChatbot />
 
-    <Modal.Body>
+      <Modal show={show} onHide={handleClose} centered>
 
-      <Form>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Transaction</Modal.Title>
+        </Modal.Header>
 
-        <Form.Group>
-          <Form.Label>Title</Form.Label>
+        <Modal.Body>
 
-          <Form.Control
-            type="text"
-            name="title"
-            value={values.title}
-            onChange={handleChange}
-          />
-        </Form.Group>
+          <Form>
 
-        <Form.Group>
-          <Form.Label>Amount</Form.Label>
+            <Form.Group>
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                name="title"
+                value={values.title}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-          <Form.Control
-            type="number"
-            name="amount"
-            value={values.amount}
-            onChange={handleChange}
-          />
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Amount</Form.Label>
+              <Form.Control
+                type="number"
+                name="amount"
+                value={values.amount}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Description</Form.Label>
+            <Form.Group>
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                name="description"
+                value={values.description}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
-          <Form.Control
-            type="text"
-            name="description"
-            value={values.description}
-            onChange={handleChange}
-          />
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Category</Form.Label>
 
-        <Form.Group>
-          <Form.Label>Category</Form.Label>
+              <Form.Select
+                name="category"
+                value={values.category}
+                onChange={handleChange}
+              >
 
-          <Form.Select
-            name="category"
-            value={values.category}
-            onChange={handleChange}
-          >
+                <option value="">Choose...</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Rent">Rent</option>
+                <option value="Salary">Salary</option>
+                <option value="Tip">Tip</option>
+                <option value="Food">Food</option>
+                <option value="Medical">Medical</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Other">Other</option>
 
-            <option value="">Choose...</option>
-            <option value="Groceries">Groceries</option>
-            <option value="Rent">Rent</option>
-            <option value="Salary">Salary</option>
-            <option value="Tip">Tip</option>
-            <option value="Food">Food</option>
-            <option value="Medical">Medical</option>
-            <option value="Utilities">Utilities</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Transportation">Transportation</option>
-            <option value="Other">Other</option>
+              </Form.Select>
 
-          </Form.Select>
+            </Form.Group>
 
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Transaction Type</Form.Label>
 
-        <Form.Group>
-          <Form.Label>Transaction Type</Form.Label>
+              <Form.Select
+                name="transactionType"
+                value={values.transactionType}
+                onChange={handleChange}
+              >
+                <option value="">Choose...</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </Form.Select>
 
-          <Form.Select
-            name="transactionType"
-            value={values.transactionType}
-            onChange={handleChange}
-          >
+            </Form.Group>
 
-            <option value="">Choose...</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
+            <Form.Group>
+              <Form.Label>Date</Form.Label>
 
-          </Form.Select>
+              <Form.Control
+                type="date"
+                name="date"
+                value={values.date}
+                onChange={handleChange}
+              />
 
-        </Form.Group>
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Date</Form.Label>
+          </Form>
 
-          <Form.Control
-            type="date"
-            name="date"
-            value={values.date}
-            onChange={handleChange}
-          />
+        </Modal.Body>
 
-        </Form.Group>
+        <Modal.Footer>
 
-      </Form>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
 
-    </Modal.Body>
+          <Button variant="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
 
-    <Modal.Footer>
+        </Modal.Footer>
 
-      <Button variant="secondary" onClick={handleClose}>
-        Close
-      </Button>
+      </Modal>
 
-      <Button variant="primary" onClick={handleSubmit}>
-        Submit
-      </Button>
-
-    </Modal.Footer>
-
-  </Modal>
-
-</>
-
-);
+    </>
+  );
 
 };
 
