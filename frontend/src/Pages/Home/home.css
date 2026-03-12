@@ -8,22 +8,59 @@
 --glass-shadow: 0 10px 40px rgba(0,0,0,0.6);
 }
 
-body,html{
-margin:0;
-padding:0;
-height:100%;
-font-family:'Arial',sans-serif;
-overflow-x:hidden;
+/* ========================= */
+/* FINTECH ANIMATED BACKGROUND */
+/* ========================= */
 
-background:linear-gradient(-45deg,#1e1e1e,#121212,#0d0d0d,#1e1e1e);
-background-size:400% 400%;
-animation:gradientBG 15s ease infinite;
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(
+    -45deg,
+    #0f172a,
+    #111827,
+    #1e293b,
+    #0f172a
+  );
+  background-size: 400% 400%;
+  animation: gradientFlow 18s ease infinite;
+  overflow-x: hidden;
 }
 
-@keyframes gradientBG{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+/* Background movement */
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating glow circles */
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.25;
+  z-index: -1;
+}
+
+body::before {
+  background: #4f46e5;
+  top: -200px;
+  left: -200px;
+}
+
+body::after {
+  background: #22c55e;
+  bottom: -200px;
+  right: -200px;
 }
 
 /* ============================= /
@@ -364,4 +401,17 @@ max-width:100%!important;
   color:white !important;
   border:1px solid #2ecc71 !important;
   box-shadow:0 0 8px rgba(46,204,113,0.5);
+}
+/* Fix dropdown option visibility */
+
+select,
+.form-select {
+  background-color: #1e1e1e !important;
+  color: white !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+}
+
+select option {
+  background-color: #ffffff;
+  color: #000000;
 }

@@ -75,6 +75,8 @@ const About = () => {
           <p style={{ fontSize: "16px", lineHeight: "1.8" }}>
             📞 <strong>Contact Number:</strong> 7760973219
             <br />
+            🔗 <strong>LinkedIn:</strong>https://www.linkedin.com/in/prem-chalase-21a572392?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
+            <br />
             ✉️ <strong>Email:</strong> premchalase3@gmail.com
             <br />
             🕙 <strong>Available:</strong> 10:00 AM – 9:00 PM
