@@ -4,7 +4,7 @@ const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
 
-export const askAI = async (req, res) => {
+export const financeChatbot = async (req, res) => {
   try {
 
     const { message } = req.body;

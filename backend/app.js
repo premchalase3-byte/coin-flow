@@ -11,7 +11,7 @@ import { connectDB } from "./DB/Database.js";
 
 import transactionRoutes from "./Routers/Transactions.js";
 import userRoutes from "./Routers/userRouter.js";
-import aiRoutes from "./Routers/aiRoutes.js";   // 🤖 AI ROUTE
+import aiRoutes from "./Routers/aiRoutes.js"; // 🤖 AI ROUTES
 
 const app = express();
 
@@ -21,7 +21,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://coinflow-premchalase3-bytes-projects.vercel.app"
+  "https://coinflow-premchalase3-bytes-projects.vercel.app",
 ];
 
 /* ============================= */
@@ -32,7 +32,7 @@ app.use(
   cors({
     origin: function (origin, callback) {
 
-      // allow requests with no origin (mobile apps, postman)
+      // allow requests with no origin (mobile apps, Postman)
       if (!origin) return callback(null, true);
 
       if (
@@ -72,7 +72,6 @@ app.use("/api/auth", userRoutes);
 
 app.use("/api/ai", aiRoutes);
 
-
 /* ============================= */
 /* Health Check */
 /* ============================= */
@@ -81,20 +80,18 @@ app.get("/", (req, res) => {
   res.send("CoinFlow Backend Running 🚀");
 });
 
-
 /* ============================= */
 /* Start Server */
 /* ============================= */
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+/* ============================= */
+/* Connect MongoDB then Start */
+/* ============================= */
+
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
-
-
-/* ============================= */
-/* Connect MongoDB */
-/* ============================= */
-
-connectDB();

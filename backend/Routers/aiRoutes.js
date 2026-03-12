@@ -3,6 +3,6 @@ import { financeChatbot } from "../controllers/aiController.js";
 
 const router = express.Router();
 
-router.post("/finance-chat", financeChatbot);
+router.post("/", financeChatbot);
 
 export default router;
