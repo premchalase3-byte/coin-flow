@@ -5,22 +5,31 @@ const groq = new Groq({
 });
 
 export const financeChatbot = async (req, res) => {
-
   try {
 
     const { message, transactions } = req.body;
 
+    if (!message) {
+      return res.status(400).json({
+        reply: "Please ask a question."
+      });
+    }
+
+    /* ========================= */
+    /* Prepare Transaction Data */
+    /* ========================= */
+
     let transactionSummary = "No transaction data available.";
 
-    if (transactions && transactions.length > 0) {
+    if (Array.isArray(transactions) && transactions.length > 0) {
 
       const totalExpense = transactions
         .filter(t => t.transactionType === "expense")
-        .reduce((acc, curr) => acc + Number(curr.amount), 0);
+        .reduce((acc, curr) => acc + Number(curr.amount || 0), 0);
 
       const totalIncome = transactions
         .filter(t => t.transactionType === "income")
-        .reduce((acc, curr) => acc + Number(curr.amount), 0);
+        .reduce((acc, curr) => acc + Number(curr.amount || 0), 0);
 
       const categories = {};
 
@@ -28,11 +37,13 @@ export const financeChatbot = async (req, res) => {
 
         if (t.transactionType === "expense") {
 
-          if (!categories[t.category]) {
-            categories[t.category] = 0;
+          const cat = t.category || "Other";
+
+          if (!categories[cat]) {
+            categories[cat] = 0;
           }
 
-          categories[t.category] += Number(t.amount);
+          categories[cat] += Number(t.amount || 0);
 
         }
 
@@ -42,11 +53,15 @@ export const financeChatbot = async (req, res) => {
 Total Income: ₹${totalIncome}
 Total Expense: ₹${totalExpense}
 
-Expenses by category:
-${JSON.stringify(categories)}
+Expense by category:
+${JSON.stringify(categories, null, 2)}
 `;
 
     }
+
+    /* ========================= */
+    /* AI Prompt */
+    /* ========================= */
 
     const prompt = `
 You are a financial advisor AI inside a fintech app called CoinFlow.
@@ -57,29 +72,38 @@ ${message}
 User financial data:
 ${transactionSummary}
 
-Give personalized financial advice based on the user's spending.
-Keep the response short and helpful.
+Analyze the user's spending and provide short helpful financial advice.
+If spending looks balanced, say so.
+If overspending exists, suggest improvement tips.
 `;
+
+    /* ========================= */
+    /* Call GROQ AI */
+    /* ========================= */
 
     const completion = await groq.chat.completions.create({
       model: "llama3-70b-8192",
       messages: [
-        { role: "user", content: prompt }
+        {
+          role: "user",
+          content: prompt,
+        },
       ],
     });
 
-    const reply = completion.choices[0].message.content;
+    const reply =
+      completion?.choices?.[0]?.message?.content ||
+      "I couldn't analyze the finances right now.";
 
-    res.status(200).json({ reply });
+    return res.status(200).json({ reply });
 
   } catch (error) {
 
     console.error("AI ERROR:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       reply: "AI service error. Please try again."
     });
 
   }
-
 };
