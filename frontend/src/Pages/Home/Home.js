@@ -373,7 +373,7 @@ const Home = () => {
       </Container>
 
       {/* Floating AI Chatbot */}
-      <AIChatbot />
+      <AIChatbot transactions={transactions} />
 
       <Modal show={show} onHide={handleClose} centered>
 

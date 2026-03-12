@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./AIChatbot.css";
 
-const AIChatbot = () => {
+const AIChatbot = ({ transactions }) => {
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -27,7 +27,10 @@ const AIChatbot = () => {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ message })
+          body: JSON.stringify({
+            message,
+            transactions   // send user transactions to backend
+          })
         }
       );
 
@@ -81,7 +84,7 @@ const AIChatbot = () => {
         setTyping(false);
       }
 
-    }, 20); // typing speed
+    }, 20);
 
   };
 
