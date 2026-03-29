@@ -1,5 +1,5 @@
 # Coin-Flow – Personal Finance Management System (MERN Stack)
-<<<<<<< HEAD
+ HEAD
 # live website : https://coinflow-premchalase3-bytes-projects.vercel.app/
 ## Project Description
 Coin-Flow is a full-stack web application developed using the MERN stack (MongoDB, Express.js, React.js, and Node.js). The application helps users track, manage, and analyze their income and expenses efficiently. It provides a simple and intuitive interface for recording financial transactions and visualizing spending patterns.
@@ -7,7 +7,7 @@ Coin-Flow is a full-stack web application developed using the MERN stack (MongoD
 
 ## Project Overview
 Coin-Flow is a full-stack web application built using the MERN stack (MongoDB, Express.js, React.js, and Node.js). The system helps users efficiently track, manage, and analyze their personal income and expenses.
->>>>>>> 3f75a22 (fixed .env and AImodel)
+3f75a22 (fixed .env and AImodel)
 
 The application provides an intuitive interface for recording financial transactions and visualizing spending patterns through charts and structured data views. It is designed to demonstrate real-world full stack web development practices including secure authentication, API integration, and database management.
 
