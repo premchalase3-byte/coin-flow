@@ -82,7 +82,7 @@ If overspending exists, suggest improvement tips.
     /* ========================= */
 
     const completion = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "mixtral-8x7b-32768",
       messages: [
         {
           role: "user",
