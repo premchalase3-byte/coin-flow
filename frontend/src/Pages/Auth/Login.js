@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import { loginAPI } from "../../utils/ApiRequest";
+import DottedSurface from "../../components/DottedSurface";
 
 const Login = () => {
 
@@ -33,10 +32,14 @@ const Login = () => {
   };
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     const { email, password } = values;
@@ -80,60 +83,53 @@ const Login = () => {
       setLoading(false);
 
     }
-  };
 
-  const particlesInit = useCallback(async (engine) => {
-    await loadFull(engine);
-  }, []);
+  };
 
   return (
 
-    <div style={{ position: "relative", overflow: "hidden" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
 
-      <Particles
-        init={particlesInit}
-        options={{
-          background: { color: { value: "#000" } },
-          particles: {
-            number: { value: 200 },
-            color: { value: "#ffcc00" },
-            size: { value: 3 },
-            move: { enable: true, speed: 2 },
-          },
-        }}
-        style={{
-          position: "absolute",
-          zIndex: -1,
-          inset: 0,
-        }}
-      />
+      {/* Dashboard Background */}
+      <DottedSurface />
 
       <Container
         className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: "100vh", position: "relative", zIndex: 2 }}
+        style={{
+          minHeight: "100vh",
+          position: "relative",
+          zIndex: 2,
+        }}
       >
 
         <Row className="w-100">
 
           <Col xs={12} md={{ span: 6, offset: 3 }}>
 
-            <div
-              style={{
-                backdropFilter: "blur(10px)",
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "15px",
-                padding: "35px",
-              }}
-            >
+            <div className="auth-card">
 
               <h1 className="text-center">
                 <AccountBalanceWalletIcon
-                  sx={{ fontSize: 40, color: "white" }}
+                  sx={{
+                    fontSize: 45,
+                    color: "#ffffff",
+                  }}
                 />
               </h1>
 
-              <h2 className="text-center text-white mt-3">
+              <h2
+                className="text-center text-white mt-3"
+                style={{
+                  fontWeight: "600",
+                  letterSpacing: "0.5px",
+                }}
+              >
                 Login
               </h2>
 
@@ -150,6 +146,7 @@ const Login = () => {
                     name="email"
                     value={values.email}
                     onChange={handleChange}
+                    placeholder="Enter your email"
                   />
 
                 </Form.Group>
@@ -167,16 +164,18 @@ const Login = () => {
                       name="password"
                       value={values.password}
                       onChange={handleChange}
+                      placeholder="Enter password"
                     />
 
                     <span
                       onClick={() => setShowPassword(!showPassword)}
                       style={{
                         position: "absolute",
-                        right: "10px",
-                        top: "8px",
+                        right: "12px",
+                        top: "10px",
                         cursor: "pointer",
-                        color: "#999",
+                        color: "#aaa",
+                        fontSize: "14px",
                       }}
                     >
                       {showPassword ? "🙈" : "👁"}
@@ -188,15 +187,32 @@ const Login = () => {
 
                 <div className="text-center mt-4">
 
-                  <Button type="submit" disabled={loading}>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    style={{
+                      padding: "10px 30px",
+                      borderRadius: "10px",
+                      fontWeight: "600",
+                    }}
+                  >
                     {loading ? "Logging in..." : "Login"}
                   </Button>
 
-                  <p className="mt-3" style={{ color: "#ccc" }}>
+                  <p
+                    className="mt-3"
+                    style={{
+                      color: "#cccccc",
+                    }}
+                  >
                     Don’t have an account?{" "}
                     <Link
                       to="/signup"
-                      style={{ color: "#0d6efd", fontWeight: "500" }}
+                      style={{
+                        color: "#00d9ff",
+                        fontWeight: "600",
+                        textDecoration: "none",
+                      }}
                     >
                       Signup
                     </Link>

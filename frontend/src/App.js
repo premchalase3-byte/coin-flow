@@ -1,11 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-
+import FloatingBrand from "./components/FloatingBrand";
 import Login from "./Pages/Auth/Login";
 import Signup from "./Pages/Auth/Register";
 import Home from "./Pages/Home/Home";
-import About from "./Pages/About/About";   // ✅ ADD THIS
-
+import About from "./Pages/About/About";
 function App() {
   const user = localStorage.getItem("user");
 
@@ -28,7 +27,6 @@ function App() {
           element={!user ? <Signup /> : <Navigate to="/" />}
         />
 
-        {/* ✅ ADD ABOUT ROUTE */}
         <Route
           path="/about"
           element={user ? <About /> : <Navigate to="/login" />}
@@ -37,6 +35,7 @@ function App() {
         <Route path="*" element={<Navigate to="/" />} />
 
       </Routes>
+      <FloatingBrand />
     </Router>
   );
 }

@@ -10,10 +10,12 @@ import Analytics from "./Analytics";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AIChatbot from "../../components/AIChatbot";
+import AIInsights from "../../components/AIInsights";
+import DottedSurface from "../../components/DottedSurface";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AIInsights from "../../components/AIInsights";
+
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import BarChartIcon from "@mui/icons-material/BarChart";
 
@@ -109,9 +111,23 @@ const Home = () => {
 
     e.preventDefault();
 
-    const { title, amount, description, category, date, transactionType } = values;
+    const {
+      title,
+      amount,
+      description,
+      category,
+      date,
+      transactionType
+    } = values;
 
-    if (!title || !amount || !description || !category || !date || !transactionType) {
+    if (
+      !title ||
+      !amount ||
+      !description ||
+      !category ||
+      !date ||
+      !transactionType
+    ) {
       toast.error("Please enter all fields", toastOptions);
       return;
     }
@@ -216,12 +232,28 @@ const Home = () => {
 
     <>
 
+      {/* 🔥 Animated Background */}
+      <DottedSurface />
+
       <Navbar />
 
-      <Container fluid style={{ marginTop: "90px", minHeight: "100vh", padding: "20px" }}>
+      <Container
+        fluid
+        style={{
+          marginTop: "90px",
+          minHeight: "100vh",
+          padding: "20px",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+
+        {/* ========================= */}
+        {/* STAT CARDS */}
+        {/* ========================= */}
 
         <div className="stats-container">
-        
+
           <div className="stat-card income">
             <h5>Total Income</h5>
             <h3>₹ {totalIncome}</h3>
@@ -243,12 +275,23 @@ const Home = () => {
           </div>
 
         </div>
+
+        {/* ========================= */}
+        {/* AI INSIGHTS */}
+        {/* ========================= */}
+
         <AIInsights transactions={transactions} />
+
+        {/* ========================= */}
+        {/* FILTER SECTION */}
+        {/* ========================= */}
+
         <div className="filterRow">
 
           <div className="text-white">
 
             <Form.Group>
+
               <Form.Label>Select Frequency</Form.Label>
 
               <Form.Select
@@ -268,6 +311,7 @@ const Home = () => {
           <div className="text-white">
 
             <Form.Group>
+
               <Form.Label>Type</Form.Label>
 
               <Form.Select
@@ -311,12 +355,19 @@ const Home = () => {
 
         </div>
 
+        {/* ========================= */}
+        {/* CUSTOM DATE */}
+        {/* ========================= */}
+
         {frequency === "custom" && (
 
           <div className="date">
 
             <div className="form-group">
-              <label className="text-white">Start Date:</label>
+
+              <label className="text-white">
+                Start Date:
+              </label>
 
               <DatePicker
                 selected={startDate}
@@ -326,11 +377,14 @@ const Home = () => {
                 endDate={endDate}
                 className="form-control"
               />
+
             </div>
 
             <div className="form-group">
 
-              <label className="text-white">End Date:</label>
+              <label className="text-white">
+                End Date:
+              </label>
 
               <DatePicker
                 selected={endDate}
@@ -348,32 +402,61 @@ const Home = () => {
 
         )}
 
+        {/* ========================= */}
+        {/* RESET BUTTON */}
+        {/* ========================= */}
+
         <div className="containerBtn">
+
           <Button variant="primary" onClick={handleReset}>
             Reset Filter
           </Button>
+
         </div>
+
+        {/* ========================= */}
+        {/* LOADER */}
+        {/* ========================= */}
 
         {loading && <Spinner />}
 
+        {/* ========================= */}
+        {/* TABLE VIEW */}
+        {/* ========================= */}
+
         {!loading && view === "table" && (
+
           <div className="table-container">
             <TableData data={transactions} user={cUser} />
           </div>
+
         )}
 
+        {/* ========================= */}
+        {/* CHART VIEW */}
+        {/* ========================= */}
+
         {!loading && view === "chart" && (
+
           <div className="analytics-card">
             <Analytics transactions={transactions} />
           </div>
+
         )}
 
         <ToastContainer />
 
       </Container>
 
-      {/* Floating AI Chatbot */}
+      {/* ========================= */}
+      {/* FLOATING CHATBOT */}
+      {/* ========================= */}
+
       <AIChatbot transactions={transactions} />
+
+      {/* ========================= */}
+      {/* MODAL */}
+      {/* ========================= */}
 
       <Modal show={show} onHide={handleClose} centered>
 
@@ -385,38 +468,59 @@ const Home = () => {
 
           <Form>
 
-            <Form.Group>
-              <Form.Label>Title</Form.Label>
+            <Form.Group className="mb-3">
+
+              <Form.Label className="text-white">
+                Title
+              </Form.Label>
+
               <Form.Control
                 type="text"
+                placeholder="Enter title"
                 name="title"
                 value={values.title}
                 onChange={handleChange}
               />
+
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Amount</Form.Label>
+            <Form.Group className="mb-3">
+
+              <Form.Label className="text-white">
+                Amount
+              </Form.Label>
+
               <Form.Control
                 type="number"
+                placeholder="Enter amount"
                 name="amount"
                 value={values.amount}
                 onChange={handleChange}
               />
+
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Description</Form.Label>
+            <Form.Group className="mb-3">
+
+              <Form.Label className="text-white">
+                Description
+              </Form.Label>
+
               <Form.Control
                 type="text"
+                placeholder="Enter description"
                 name="description"
                 value={values.description}
                 onChange={handleChange}
               />
+
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Category</Form.Label>
+            <Form.Group className="mb-3">
+
+              <Form.Label className="text-white">
+                Category
+              </Form.Label>
 
               <Form.Select
                 name="category"
@@ -440,23 +544,31 @@ const Home = () => {
 
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Transaction Type</Form.Label>
+            <Form.Group className="mb-3">
+
+              <Form.Label className="text-white">
+                Transaction Type
+              </Form.Label>
 
               <Form.Select
                 name="transactionType"
                 value={values.transactionType}
                 onChange={handleChange}
               >
+
                 <option value="">Choose...</option>
                 <option value="income">Income</option>
                 <option value="expense">Expense</option>
+
               </Form.Select>
 
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Date</Form.Label>
+            <Form.Group className="mb-3">
+
+              <Form.Label className="text-white">
+                Date
+              </Form.Label>
 
               <Form.Control
                 type="date"
@@ -486,6 +598,7 @@ const Home = () => {
       </Modal>
 
     </>
+
   );
 
 };

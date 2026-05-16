@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
 import { registerAPI } from "../../utils/ApiRequest";
 import axios from "axios";
+import DottedSurface from "../../components/DottedSurface";
 
 const Register = () => {
 
@@ -36,10 +35,13 @@ const Register = () => {
   };
 
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value
+    });
   };
 
-  /* Password Strength Checker */
+  /* Password Strength */
 
   const getPasswordStrength = (password) => {
 
@@ -51,9 +53,27 @@ const Register = () => {
     if (/\d/.test(password)) strength++;
     if (/[@$!%*?&]/.test(password)) strength++;
 
-    if (strength <= 2) return { label: "Weak", color: "red", width: "33%" };
-    if (strength <= 4) return { label: "Medium", color: "orange", width: "66%" };
-    return { label: "Strong", color: "green", width: "100%" };
+    if (strength <= 2) {
+      return {
+        label: "Weak",
+        color: "red",
+        width: "33%"
+      };
+    }
+
+    if (strength <= 4) {
+      return {
+        label: "Medium",
+        color: "orange",
+        width: "66%"
+      };
+    }
+
+    return {
+      label: "Strong",
+      color: "green",
+      width: "100%"
+    };
 
   };
 
@@ -79,11 +99,14 @@ const Register = () => {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
 
     if (!passwordRegex.test(password)) {
+
       toast.error(
         "Password must contain 6+ chars, 1 uppercase, 1 lowercase, 1 number and 1 special character",
         toastOptions
       );
+
       return;
+
     }
 
     try {
@@ -107,12 +130,17 @@ const Register = () => {
         }, 1000);
 
       } else {
+
         toast.error(data.message, toastOptions);
+
       }
 
     } catch (error) {
 
-      toast.error("Registration failed. Please try again.", toastOptions);
+      toast.error(
+        "Registration failed. Please try again.",
+        toastOptions
+      );
 
     } finally {
 
@@ -122,70 +150,85 @@ const Register = () => {
 
   };
 
-  const particlesInit = useCallback(async (engine) => {
-    await loadFull(engine);
-  }, []);
-
   return (
 
-    <div style={{ position: "relative", overflow: "hidden" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
 
-      <Particles
-        init={particlesInit}
-        options={{
-          background: { color: { value: "#000" } },
-          particles: {
-            number: { value: 200 },
-            color: { value: "#ffcc00" },
-            size: { value: 3 },
-            move: { enable: true, speed: 2 },
-          },
-        }}
-        style={{
-          position: "absolute",
-          zIndex: -1,
-          inset: 0,
-        }}
-      />
+      {/* Dashboard Background */}
+      <DottedSurface />
 
       <Container
         className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: "100vh", position: "relative", zIndex: 2 }}
+        style={{
+          minHeight: "100vh",
+          position: "relative",
+          zIndex: 2,
+        }}
       >
 
         <Row className="w-100">
+
           <Col xs={12} md={{ span: 6, offset: 3 }}>
 
             <div className="auth-card">
 
               <h1 className="text-center">
-                <AccountBalanceWalletIcon sx={{ fontSize: 40, color: "white" }} />
+                <AccountBalanceWalletIcon
+                  sx={{
+                    fontSize: 45,
+                    color: "#ffffff",
+                  }}
+                />
               </h1>
 
-              <h2 className="text-center text-white mt-2">
+              <h2
+                className="text-center text-white mt-2"
+                style={{
+                  fontWeight: "600",
+                  letterSpacing: "0.5px",
+                }}
+              >
                 Registration
               </h2>
 
               <Form onSubmit={handleSubmit}>
 
                 <Form.Group className="mt-3">
-                  <Form.Label className="text-white">Name</Form.Label>
+
+                  <Form.Label className="text-white">
+                    Name
+                  </Form.Label>
+
                   <Form.Control
                     type="text"
                     name="name"
                     value={values.name}
                     onChange={handleChange}
+                    placeholder="Enter your name"
                   />
+
                 </Form.Group>
 
                 <Form.Group className="mt-3">
-                  <Form.Label className="text-white">Email</Form.Label>
+
+                  <Form.Label className="text-white">
+                    Email
+                  </Form.Label>
+
                   <Form.Control
                     type="email"
                     name="email"
                     value={values.email}
                     onChange={handleChange}
+                    placeholder="Enter your email"
                   />
+
                 </Form.Group>
 
                 <Form.Group className="mt-3">
@@ -201,16 +244,18 @@ const Register = () => {
                       name="password"
                       value={values.password}
                       onChange={handleChange}
+                      placeholder="Enter password"
                     />
 
                     <span
                       onClick={() => setShowPassword(!showPassword)}
                       style={{
                         position: "absolute",
-                        right: "10px",
-                        top: "8px",
+                        right: "12px",
+                        top: "10px",
                         cursor: "pointer",
-                        color: "#999"
+                        color: "#aaa",
+                        fontSize: "14px",
                       }}
                     >
                       {showPassword ? "🙈" : "👁"}
@@ -220,7 +265,12 @@ const Register = () => {
 
                   {values.password && (
 
-                    <div style={{ marginTop: "6px", fontSize: "14px" }}>
+                    <div
+                      style={{
+                        marginTop: "6px",
+                        fontSize: "14px",
+                      }}
+                    >
 
                       <span style={{ color: passwordStrength.color }}>
                         Strength: {passwordStrength.label}
@@ -263,21 +313,44 @@ const Register = () => {
                     name="confirmPassword"
                     value={values.confirmPassword}
                     onChange={handleChange}
+                    placeholder="Confirm password"
                   />
 
                 </Form.Group>
 
                 <div className="text-center mt-5">
 
-                  <Button type="submit" disabled={loading}>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    style={{
+                      padding: "10px 30px",
+                      borderRadius: "10px",
+                      fontWeight: "600",
+                    }}
+                  >
                     {loading ? "Registering..." : "Signup"}
                   </Button>
 
-                  <p className="mt-3" style={{ color: "#ccc" }}>
+                  <p
+                    className="mt-3"
+                    style={{
+                      color: "#ccc",
+                    }}
+                  >
                     Already have an account?{" "}
-                    <Link to="/login" style={{ color: "#0d6efd", fontWeight: "500" }}>
+
+                    <Link
+                      to="/login"
+                      style={{
+                        color: "#00d9ff",
+                        fontWeight: "600",
+                        textDecoration: "none",
+                      }}
+                    >
                       Login
                     </Link>
+
                   </p>
 
                 </div>
@@ -287,6 +360,7 @@ const Register = () => {
             </div>
 
           </Col>
+
         </Row>
 
         <ToastContainer />
