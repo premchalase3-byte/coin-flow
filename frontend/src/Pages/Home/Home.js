@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AIChatbot from "../../components/AIChatbot";
 import AIInsights from "../../components/AIInsights";
 import DottedSurface from "../../components/DottedSurface";
+import ActionLoader from "../../components/ActionLoader";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,6 +34,27 @@ const Home = () => {
 
   const [cUser, setcUser] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  /* ================================= */
+  /* ACTION LOADER */
+  /* ================================= */
+
+  const [actionLoading, setActionLoading] = useState(false);
+  const [actionLoadingText, setActionLoadingText] = useState(
+    "Loading..."
+  );
+
+  const showActionLoader = (text) => {
+    setActionLoadingText(text);
+    setActionLoading(true);
+  };
+
+  const hideActionLoader = () => {
+    setActionLoading(false);
+  };
+
+  /* ================================= */
+
   const [transactions, setTransactions] = useState([]);
   const [refresh, setRefresh] = useState(false);
 
@@ -54,33 +76,49 @@ const Home = () => {
     transactionType: "",
   });
 
-  /* ========================= */
-  /* Dashboard Stats */
-  /* ========================= */
+  /* ================================= */
+  /* DASHBOARD STATS */
+  /* ================================= */
 
   const totalIncome = transactions
     .filter((t) => t.transactionType === "income")
-    .reduce((acc, curr) => acc + Number(curr.amount), 0);
+    .reduce(
+      (acc, curr) => acc + Number(curr.amount),
+      0
+    );
 
   const totalExpense = transactions
     .filter((t) => t.transactionType === "expense")
-    .reduce((acc, curr) => acc + Number(curr.amount), 0);
+    .reduce(
+      (acc, curr) => acc + Number(curr.amount),
+      0
+    );
 
   const totalBalance = totalIncome - totalExpense;
 
   const totalTransactions = transactions.length;
 
-  /* ========================= */
+  /* ================================= */
 
-  const handleStartChange = (date) => setStartDate(date);
-  const handleEndChange = (date) => setEndDate(date);
+  const handleStartChange = (date) => {
+    setStartDate(date);
+  };
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleEndChange = (date) => {
+    setEndDate(date);
+  };
 
-  /* ========================= */
-  /* Check Login */
-  /* ========================= */
+  const handleClose = () => {
+    setShow(false);
+  };
+
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  /* ================================= */
+  /* CHECK LOGIN */
+  /* ================================= */
 
   useEffect(() => {
 
@@ -96,16 +134,22 @@ const Home = () => {
 
   }, [navigate]);
 
-  /* ========================= */
+  /* ================================= */
+  /* INPUT CHANGE */
+  /* ================================= */
 
   const handleChange = (e) => {
+
     setValues({
       ...values,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
+
   };
 
-  /* ========================= */
+  /* ================================= */
+  /* ADD TRANSACTION */
+  /* ================================= */
 
   const handleSubmit = async (e) => {
 
@@ -117,7 +161,7 @@ const Home = () => {
       description,
       category,
       date,
-      transactionType
+      transactionType,
     } = values;
 
     if (
@@ -128,22 +172,35 @@ const Home = () => {
       !date ||
       !transactionType
     ) {
-      toast.error("Please enter all fields", toastOptions);
+
+      toast.error(
+        "Please enter all fields",
+        toastOptions
+      );
+
       return;
     }
 
     setLoading(true);
 
+    showActionLoader("Adding transaction...");
+
     try {
 
-      const { data } = await axios.post(addTransaction, {
-        ...values,
-        userId: cUser._id,
-      });
+      const { data } = await axios.post(
+        addTransaction,
+        {
+          ...values,
+          userId: cUser._id,
+        }
+      );
 
       if (data.success) {
 
-        toast.success(data.message, toastOptions);
+        toast.success(
+          data.message,
+          toastOptions
+        );
 
         setShow(false);
 
@@ -160,32 +217,54 @@ const Home = () => {
 
       } else {
 
-        toast.error(data.message, toastOptions);
+        toast.error(
+          data.message,
+          toastOptions
+        );
 
       }
 
     } catch (err) {
 
-      toast.error("Something went wrong!", toastOptions);
+      console.error(err);
+
+      toast.error(
+        "Something went wrong!",
+        toastOptions
+      );
+
+    } finally {
+
+      setLoading(false);
+
+      hideActionLoader();
 
     }
 
-    setLoading(false);
-
   };
 
-  /* ========================= */
+  /* ================================= */
+  /* RESET FILTER */
+  /* ================================= */
 
   const handleReset = () => {
+
+    showActionLoader("Resetting filters...");
+
     setType("all");
     setFrequency("7");
     setStartDate(null);
     setEndDate(null);
+
+    setTimeout(() => {
+      hideActionLoader();
+    }, 350);
+
   };
 
-  /* ========================= */
-  /* Fetch Transactions */
-  /* ========================= */
+  /* ================================= */
+  /* FETCH TRANSACTIONS */
+  /* ================================= */
 
   useEffect(() => {
 
@@ -197,15 +276,20 @@ const Home = () => {
 
       try {
 
-        const { data } = await axios.post(getTransactions, {
-          userId: cUser._id,
-          frequency,
-          startDate,
-          endDate,
-          type,
-        });
+        const { data } = await axios.post(
+          getTransactions,
+          {
+            userId: cUser._id,
+            frequency,
+            startDate,
+            endDate,
+            type,
+          }
+        );
 
-        setTransactions(data.transactions || []);
+        setTransactions(
+          data.transactions || []
+        );
 
       } catch (err) {
 
@@ -219,23 +303,108 @@ const Home = () => {
 
     fetchTransactions();
 
-  }, [refresh, cUser, frequency, startDate, endDate, type]);
+  }, [
+    refresh,
+    cUser,
+    frequency,
+    startDate,
+    endDate,
+    type,
+  ]);
 
-  /* ========================= */
+  /* ================================= */
+  /* VIEW SWITCHING */
+  /* ================================= */
 
-  const handleTableClick = () => setView("table");
-  const handleChartClick = () => setView("chart");
+  const handleTableClick = () => {
 
-  /* ========================= */
+    if (view === "table") return;
+
+    showActionLoader("Opening transactions...");
+
+    setView("table");
+
+    setTimeout(() => {
+      hideActionLoader();
+    }, 300);
+
+  };
+
+  const handleChartClick = () => {
+
+    if (view === "chart") return;
+
+    showActionLoader("Preparing analytics...");
+
+    setView("chart");
+
+    setTimeout(() => {
+      hideActionLoader();
+    }, 400);
+
+  };
+
+  /* ================================= */
+  /* FILTER CHANGE */
+  /* ================================= */
+
+  const handleFrequencyChange = (e) => {
+
+    showActionLoader("Updating transactions...");
+
+    setFrequency(e.target.value);
+
+    setTimeout(() => {
+      hideActionLoader();
+    }, 400);
+
+  };
+
+  const handleTypeChange = (e) => {
+
+    showActionLoader("Updating transactions...");
+
+    setType(e.target.value);
+
+    setTimeout(() => {
+      hideActionLoader();
+    }, 400);
+
+  };
+
+  /* ================================= */
+  /* RENDER */
+  /* ================================= */
 
   return (
 
     <>
 
-      {/* 🔥 Animated Background */}
+      {/* ================================= */}
+      {/* ACTION LOADER */}
+      {/* ================================= */}
+
+      {actionLoading && (
+        <ActionLoader
+          text={actionLoadingText}
+        />
+      )}
+
+      {/* ================================= */}
+      {/* ANIMATED BACKGROUND */}
+      {/* ================================= */}
+
       <DottedSurface />
 
+      {/* ================================= */}
+      {/* NAVBAR */}
+      {/* ================================= */}
+
       <Navbar />
+
+      {/* ================================= */}
+      {/* MAIN CONTAINER */}
+      {/* ================================= */}
 
       <Container
         fluid
@@ -248,43 +417,73 @@ const Home = () => {
         }}
       >
 
-        {/* ========================= */}
+        {/* ================================= */}
         {/* STAT CARDS */}
-        {/* ========================= */}
+        {/* ================================= */}
 
         <div className="stats-container">
 
           <div className="stat-card income">
-            <h5>Total Income</h5>
-            <h3>₹ {totalIncome}</h3>
+
+            <h5>
+              Total Income
+            </h5>
+
+            <h3>
+              ₹ {totalIncome}
+            </h3>
+
           </div>
 
           <div className="stat-card expense">
-            <h5>Total Expense</h5>
-            <h3>₹ {totalExpense}</h3>
+
+            <h5>
+              Total Expense
+            </h5>
+
+            <h3>
+              ₹ {totalExpense}
+            </h3>
+
           </div>
 
           <div className="stat-card balance">
-            <h5>Balance</h5>
-            <h3>₹ {totalBalance}</h3>
+
+            <h5>
+              Balance
+            </h5>
+
+            <h3>
+              ₹ {totalBalance}
+            </h3>
+
           </div>
 
           <div className="stat-card transactions">
-            <h5>Total Transactions</h5>
-            <h3>{totalTransactions}</h3>
+
+            <h5>
+              Total Transactions
+            </h5>
+
+            <h3>
+              {totalTransactions}
+            </h3>
+
           </div>
 
         </div>
 
-        {/* ========================= */}
+        {/* ================================= */}
         {/* AI INSIGHTS */}
-        {/* ========================= */}
+        {/* ================================= */}
 
-        <AIInsights transactions={transactions} />
+        <AIInsights
+          transactions={transactions}
+        />
 
-        {/* ========================= */}
+        {/* ================================= */}
         {/* FILTER SECTION */}
-        {/* ========================= */}
+        {/* ================================= */}
 
         <div className="filterRow">
 
@@ -292,16 +491,31 @@ const Home = () => {
 
             <Form.Group>
 
-              <Form.Label>Select Frequency</Form.Label>
+              <Form.Label>
+                Select Frequency
+              </Form.Label>
 
               <Form.Select
                 value={frequency}
-                onChange={(e) => setFrequency(e.target.value)}
+                onChange={handleFrequencyChange}
               >
-                <option value="7">Last Week</option>
-                <option value="30">Last Month</option>
-                <option value="365">Last Year</option>
-                <option value="custom">Custom</option>
+
+                <option value="7">
+                  Last Week
+                </option>
+
+                <option value="30">
+                  Last Month
+                </option>
+
+                <option value="365">
+                  Last Year
+                </option>
+
+                <option value="custom">
+                  Custom
+                </option>
+
               </Form.Select>
 
             </Form.Group>
@@ -312,42 +526,76 @@ const Home = () => {
 
             <Form.Group>
 
-              <Form.Label>Type</Form.Label>
+              <Form.Label>
+                Type
+              </Form.Label>
 
               <Form.Select
                 value={type}
-                onChange={(e) => setType(e.target.value)}
+                onChange={handleTypeChange}
               >
-                <option value="all">All</option>
-                <option value="expense">Expense</option>
-                <option value="income">Income</option>
+
+                <option value="all">
+                  All
+                </option>
+
+                <option value="expense">
+                  Expense
+                </option>
+
+                <option value="income">
+                  Income
+                </option>
+
               </Form.Select>
 
             </Form.Group>
 
           </div>
 
+          {/* ================================= */}
+          {/* TABLE / CHART */}
+          {/* ================================= */}
+
           <div className="iconBtnBox">
 
             <FormatListBulletedIcon
               onClick={handleTableClick}
-              className={view === "table" ? "iconActive" : "iconDeactive"}
+              className={
+                view === "table"
+                  ? "iconActive"
+                  : "iconDeactive"
+              }
             />
 
             <BarChartIcon
               onClick={handleChartClick}
-              className={view === "chart" ? "iconActive" : "iconDeactive"}
+              className={
+                view === "chart"
+                  ? "iconActive"
+                  : "iconDeactive"
+              }
             />
 
           </div>
 
+          {/* ================================= */}
+          {/* ADD NEW */}
+          {/* ================================= */}
+
           <div>
 
-            <Button onClick={handleShow} className="addNew">
+            <Button
+              onClick={handleShow}
+              className="addNew"
+            >
               Add New
             </Button>
 
-            <Button onClick={handleShow} className="mobileBtn">
+            <Button
+              onClick={handleShow}
+              className="mobileBtn"
+            >
               +
             </Button>
 
@@ -355,9 +603,9 @@ const Home = () => {
 
         </div>
 
-        {/* ========================= */}
+        {/* ================================= */}
         {/* CUSTOM DATE */}
-        {/* ========================= */}
+        {/* ================================= */}
 
         {frequency === "custom" && (
 
@@ -402,71 +650,97 @@ const Home = () => {
 
         )}
 
-        {/* ========================= */}
-        {/* RESET BUTTON */}
-        {/* ========================= */}
+        {/* ================================= */}
+        {/* RESET */}
+        {/* ================================= */}
 
         <div className="containerBtn">
 
-          <Button variant="primary" onClick={handleReset}>
+          <Button
+            variant="primary"
+            onClick={handleReset}
+          >
             Reset Filter
           </Button>
 
         </div>
 
-        {/* ========================= */}
-        {/* LOADER */}
-        {/* ========================= */}
+        {/* ================================= */}
+        {/* EXISTING LOADER */}
+        {/* ================================= */}
 
         {loading && <Spinner />}
 
-        {/* ========================= */}
-        {/* TABLE VIEW */}
-        {/* ========================= */}
+        {/* ================================= */}
+        {/* TABLE */}
+        {/* ================================= */}
 
-        {!loading && view === "table" && (
+        {!loading &&
+          view === "table" && (
 
-          <div className="table-container">
-            <TableData data={transactions} user={cUser} />
-          </div>
+            <div className="table-container">
 
-        )}
+              <TableData
+                data={transactions}
+                user={cUser}
+              />
 
-        {/* ========================= */}
-        {/* CHART VIEW */}
-        {/* ========================= */}
+            </div>
 
-        {!loading && view === "chart" && (
+          )}
 
-          <div className="analytics-card">
-            <Analytics transactions={transactions} />
-          </div>
+        {/* ================================= */}
+        {/* ANALYTICS */}
+        {/* ================================= */}
 
-        )}
+        {!loading &&
+          view === "chart" && (
+
+            <div className="analytics-card">
+
+              <Analytics
+                transactions={transactions}
+              />
+
+            </div>
+
+          )}
 
         <ToastContainer />
 
       </Container>
 
-      {/* ========================= */}
-      {/* FLOATING CHATBOT */}
-      {/* ========================= */}
+      {/* ================================= */}
+      {/* FLOATING AI CHATBOT */}
+      {/* ================================= */}
 
-      <AIChatbot transactions={transactions} />
+      <AIChatbot
+        transactions={transactions}
+      />
 
-      {/* ========================= */}
-      {/* MODAL */}
-      {/* ========================= */}
+      {/* ================================= */}
+      {/* ADD TRANSACTION MODAL */}
+      {/* ================================= */}
 
-      <Modal show={show} onHide={handleClose} centered>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        centered
+      >
 
         <Modal.Header closeButton>
-          <Modal.Title>Add Transaction</Modal.Title>
+
+          <Modal.Title>
+            Add Transaction
+          </Modal.Title>
+
         </Modal.Header>
 
         <Modal.Body>
 
           <Form>
+
+            {/* TITLE */}
 
             <Form.Group className="mb-3">
 
@@ -484,6 +758,8 @@ const Home = () => {
 
             </Form.Group>
 
+            {/* AMOUNT */}
+
             <Form.Group className="mb-3">
 
               <Form.Label className="text-white">
@@ -499,6 +775,8 @@ const Home = () => {
               />
 
             </Form.Group>
+
+            {/* DESCRIPTION */}
 
             <Form.Group className="mb-3">
 
@@ -516,6 +794,8 @@ const Home = () => {
 
             </Form.Group>
 
+            {/* CATEGORY */}
+
             <Form.Group className="mb-3">
 
               <Form.Label className="text-white">
@@ -528,21 +808,55 @@ const Home = () => {
                 onChange={handleChange}
               >
 
-                <option value="">Choose...</option>
-                <option value="Groceries">Groceries</option>
-                <option value="Rent">Rent</option>
-                <option value="Salary">Salary</option>
-                <option value="Tip">Tip</option>
-                <option value="Food">Food</option>
-                <option value="Medical">Medical</option>
-                <option value="Utilities">Utilities</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Transportation">Transportation</option>
-                <option value="Other">Other</option>
+                <option value="">
+                  Choose...
+                </option>
+
+                <option value="Groceries">
+                  Groceries
+                </option>
+
+                <option value="Rent">
+                  Rent
+                </option>
+
+                <option value="Salary">
+                  Salary
+                </option>
+
+                <option value="Tip">
+                  Tip
+                </option>
+
+                <option value="Food">
+                  Food
+                </option>
+
+                <option value="Medical">
+                  Medical
+                </option>
+
+                <option value="Utilities">
+                  Utilities
+                </option>
+
+                <option value="Entertainment">
+                  Entertainment
+                </option>
+
+                <option value="Transportation">
+                  Transportation
+                </option>
+
+                <option value="Other">
+                  Other
+                </option>
 
               </Form.Select>
 
             </Form.Group>
+
+            {/* TRANSACTION TYPE */}
 
             <Form.Group className="mb-3">
 
@@ -556,13 +870,23 @@ const Home = () => {
                 onChange={handleChange}
               >
 
-                <option value="">Choose...</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
+                <option value="">
+                  Choose...
+                </option>
+
+                <option value="income">
+                  Income
+                </option>
+
+                <option value="expense">
+                  Expense
+                </option>
 
               </Form.Select>
 
             </Form.Group>
+
+            {/* DATE */}
 
             <Form.Group className="mb-3">
 
@@ -583,14 +907,25 @@ const Home = () => {
 
         </Modal.Body>
 
+        {/* ================================= */}
+        {/* MODAL FOOTER */}
+        {/* ================================= */}
+
         <Modal.Footer>
 
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="secondary"
+            onClick={handleClose}
+          >
             Close
           </Button>
 
-          <Button variant="primary" onClick={handleSubmit}>
-            Submit
+          <Button
+            variant="primary"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit"}
           </Button>
 
         </Modal.Footer>

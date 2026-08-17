@@ -1,0 +1,246 @@
+/* ================================= */
+/* COINFLOW ACTION LOADER */
+/* ================================= */
+
+.action-loader-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /*
+    Very subtle overlay so the existing
+    dashboard remains visible underneath.
+  */
+  background: rgba(0, 0, 0, 0.22);
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+
+  animation: actionLoaderFadeIn 0.2s ease-out;
+}
+
+
+/* ================================= */
+/* GLASS LOADER BOX */
+/* ================================= */
+
+.action-loader-box {
+  min-width: 150px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px 26px;
+
+  background: rgba(10, 15, 20, 0.68);
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  border-radius: 15px;
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.38),
+    0 0 20px rgba(0, 255, 255, 0.04);
+
+  animation: actionLoaderBoxIn 0.25s ease-out;
+}
+
+
+/* ================================= */
+/* THREE DOT LOADER */
+/* ================================= */
+
+.action-loader-spinner {
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+}
+
+
+/* Individual dots */
+
+.action-loader-spinner span {
+  width: 6px;
+  height: 6px;
+
+  display: block;
+
+  border-radius: 50%;
+
+  background: #00ffff;
+
+  opacity: 0.35;
+
+  box-shadow:
+    0 0 5px rgba(0, 255, 255, 0.35);
+
+  animation:
+    actionLoaderBounce
+    0.9s
+    infinite
+    ease-in-out;
+}
+
+
+/* Dot delays */
+
+.action-loader-spinner span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.action-loader-spinner span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.action-loader-spinner span:nth-child(3) {
+  animation-delay: 0.30s;
+}
+
+
+/* ================================= */
+/* LOADING TEXT */
+/* ================================= */
+
+.action-loader-text {
+  margin-top: 9px;
+
+  color: rgba(255, 255, 255, 0.82);
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  letter-spacing: 0.35px;
+
+  text-align: center;
+
+  white-space: nowrap;
+
+  animation: actionLoaderTextIn 0.3s ease-out;
+}
+
+
+/* ================================= */
+/* DOT ANIMATION */
+/* ================================= */
+
+@keyframes actionLoaderBounce {
+
+  0%,
+  60%,
+  100% {
+    transform: translateY(0) scale(1);
+
+    opacity: 0.35;
+  }
+
+  30% {
+    transform: translateY(-6px) scale(1.15);
+
+    opacity: 1;
+
+    box-shadow:
+      0 0 8px rgba(0, 255, 255, 0.55);
+  }
+}
+
+
+/* ================================= */
+/* OVERLAY FADE */
+/* ================================= */
+
+@keyframes actionLoaderFadeIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* ================================= */
+/* BOX ENTRANCE */
+/* ================================= */
+
+@keyframes actionLoaderBoxIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* ================================= */
+/* TEXT ENTRANCE */
+/* ================================= */
+
+@keyframes actionLoaderTextIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* ================================= */
+/* MOBILE */
+/* ================================= */
+
+@media (max-width: 576px) {
+
+  .action-loader-box {
+    min-width: 135px;
+
+    padding: 18px 22px;
+
+    border-radius: 14px;
+  }
+
+  .action-loader-text {
+    font-size: 12px;
+  }
+
+}
+
+
+/* ================================= */
+/* REDUCE MOTION */
+/* ================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .action-loader-overlay,
+  .action-loader-box,
+  .action-loader-text,
+  .action-loader-spinner span {
+    animation: none !important;
+  }
+
+}
